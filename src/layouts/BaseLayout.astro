@@ -1,0 +1,68 @@
+---
+interface Props {
+  title: string;
+}
+
+const { title } = Astro.props;
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width" />
+    <meta name="description" content="A personal story archive." />
+    <title>{title}</title>
+  </head>
+  <body>
+    <header>
+      <h1><a href="/">KoblScribl</a></h1>
+      <nav>
+        <a href="/">Home</a>
+      </nav>
+    </header>
+
+    <main>
+      <slot />
+    </main>
+  </body>
+</html>
+
+<style>
+  :global(body) {
+    margin: 0;
+    font-family: Georgia, serif;
+    background: #111;
+    color: #f5f5f5;
+    line-height: 1.7;
+  }
+
+  header {
+    padding: 1rem 2rem;
+    border-bottom: 1px solid #333;
+  }
+
+  nav a,
+  h1 a {
+    color: #f5f5f5;
+    text-decoration: none;
+  }
+
+  main {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2rem;
+  }
+
+  :global(a) {
+  color: #d8c38a;
+}
+
+:global(a:visited) {
+  color: #c7a86b;
+}
+
+:global(a:hover) {
+  color: #f0dca2;
+}
+</style>

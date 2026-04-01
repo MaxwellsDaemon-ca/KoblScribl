@@ -1,0 +1,41 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import { getCollection, render } from "astro:content";
+import type { CollectionEntry } from "astro:content";
+
+interface Props {
+  story: CollectionEntry<"stories">;
+}
+
+export async function getStaticPaths() {
+  const stories: CollectionEntry<"stories">[] = await getCollection("stories");
+
+  console.log("stories length:", stories.length);
+  console.log("stories ids:", stories.map((story) => story.id));
+
+  return stories.map((story: CollectionEntry<"stories">) => ({
+    params: { slug: story.id },
+    props: { story },
+  }));
+}
+
+const { story } = Astro.props as Props;
+const { Content } = await render(story);
+---
+
+<BaseLayout title={story.data.title}>
+  <article>
+    <p>{story.data.storyTitle}</p>
+    <h2>{story.data.title}</h2>
+    <p><em>Chapter {story.data.chapterNumber}</em></p>
+    <p>{story.data.summary}</p>
+    <p>Word Count: {story.data.wordCount}</p>
+
+    {story.data.contentWarnings && (
+      <p><strong>Content Warnings:</strong> {story.data.contentWarnings}</p>
+    )}
+
+    <hr />
+    <Content />
+  </article>
+</BaseLayout>
