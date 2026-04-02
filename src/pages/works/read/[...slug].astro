@@ -60,80 +60,151 @@ const nextChapter =
     : null;
 ---
 
-<BaseLayout title={work.data.title}>
+<BaseLayout title={work.data.chapterTitle ?? work.data.title}>
+  <p class="breadcrumb">
+    <a href="/works">Scribls!</a>
+
+    {work.data.category === "fanfiction" && work.data.fandoms[0] && (
+      <>
+        {" / "}
+        <a href={`/works/${work.data.fandomSlug[0]}`}>
+          {work.data.fandoms[0]}
+        </a>
+
+        {work.data.seriesTitle && work.data.seriesSlug && (
+          <>
+            {" / "}
+            <a href={`/works/${work.data.fandomSlug[0]}/${work.data.seriesSlug}`}>
+              {work.data.seriesTitle}
+            </a>
+          </>
+        )}
+      </>
+    )}
+
+    {work.data.category === "crossover" && (
+      <>
+        {" / "}
+        <a href="/works/crossovers">Crossovers</a>
+
+        {work.data.seriesTitle && work.data.seriesSlug && (
+          <>
+            {" / "}
+            <a href={`/works/crossovers/${work.data.seriesSlug}`}>
+              {work.data.seriesTitle}
+            </a>
+          </>
+        )}
+      </>
+    )}
+
+    {work.data.category === "original" && (
+      <>
+        {" / "}
+        <a href="/works/originals">Original Works</a>
+
+        {work.data.seriesTitle && work.data.seriesSlug && (
+          <>
+            {" / "}
+            <a href={`/works/originals/${work.data.seriesSlug}`}>
+              {work.data.seriesTitle}
+            </a>
+          </>
+        )}
+      </>
+    )}
+
+    {" / "}
+    <span>{work.data.chapterTitle ?? work.data.title}</span>
+  </p>
+
   <article class="chapter">
-  <header class="chapter-header">
-    {work.data.seriesTitle && (
-      <p class="series-title">{work.data.seriesTitle}</p>
-    )}
+    <header class="chapter-header">
+      {work.data.seriesTitle && (
+        <p class="series-title">{work.data.seriesTitle}</p>
+      )}
 
-    <h2 class="chapter-title">
-      {work.data.workType === "series" && work.data.chapterNumber
-        ? `Chapter ${work.data.chapterNumber}: ${work.data.chapterTitle ?? work.data.title}`
-        : work.data.title}
-    </h2>
+      <h2 class="chapter-title">
+        {work.data.workType === "series" && work.data.chapterNumber
+          ? `Chapter ${work.data.chapterNumber}: ${work.data.chapterTitle ?? work.data.title}`
+          : work.data.title}
+      </h2>
 
-    <div class="fandom-list">
-  {work.data.fandoms.map((fandom) => (
-    <a class="fandom-pill" href={`/works/${encodeURIComponent(fandom)}`}>
-      {fandom.toUpperCase()}
-    </a>
-  ))}
+      <div class="fandom-list">
+        {work.data.fandoms.map((fandom, index) => (
+          <a class="fandom-pill" href={`/works/${work.data.fandomSlug[index]}`}>
+            {fandom.toUpperCase()}
+          </a>
+        ))}
 
-  {work.data.isCrossover && (
-    <span class="fandom-pill crossover-pill">CROSSOVER</span>
-  )}
-</div>
+        {work.data.category === "crossover" && (
+          <span class="fandom-pill crossover-pill">CROSSOVER</span>
+        )}
+      </div>
 
-    <p class="chapter-summary">{work.data.summary}</p>
+      <p class="chapter-summary">{work.data.summary}</p>
 
-    <p class="word-count">Word Count: {work.data.wordCount}</p>
+      <p class="word-count">Word Count: {work.data.wordCount}</p>
 
-    {work.data.contentWarnings && (
-      <p class="content-warnings">CW: {work.data.contentWarnings}</p>
-    )}
+      {work.data.contentWarnings && (
+        <p class="content-warnings">CW: {work.data.contentWarnings}</p>
+      )}
 
-    {work.data.seriesTitle && (
-  <div class="series-index-link">
-    <a
-      href={`/works/${encodeURIComponent(work.data.fandoms[0])}/${encodeURIComponent(work.data.seriesTitle)}`}
-    >
-      {work.data.seriesTitle}: Chapter Index
-    </a>
-  </div>
-)}
-  </header>
-
-  <hr />
-
-  <Content />
-
-  {(previousChapter || nextChapter) && (
-    <>
-      <hr />
-
-      <nav aria-label="Chapter navigation">
-        <div class="chapter-nav">
-          <div>
-            {previousChapter && (
-              <a href={`/works/read/${previousChapter.id}`}>
-                ← Previous: {previousChapter.data.chapterTitle ?? previousChapter.data.title}
-              </a>
-            )}
-          </div>
-
-          <div class="chapter-nav-next">
-            {nextChapter && (
-              <a href={`/works/read/${nextChapter.id}`}>
-                Next: {nextChapter.data.chapterTitle ?? nextChapter.data.title} →
-              </a>
-            )}
-          </div>
+      {work.data.seriesTitle && work.data.seriesSlug && work.data.category === "fanfiction" && (
+        <div class="series-index-link">
+          <a href={`/works/${work.data.fandomSlug[0]}/${work.data.seriesSlug}`}>
+            {work.data.seriesTitle}: Chapter Index
+          </a>
         </div>
-      </nav>
-    </>
-  )}
-</article>
+      )}
+
+      {work.data.seriesTitle && work.data.seriesSlug && work.data.category === "crossover" && (
+        <div class="series-index-link">
+          <a href={`/works/crossovers/${work.data.seriesSlug}`}>
+            {work.data.seriesTitle}: Chapter Index
+          </a>
+        </div>
+      )}
+
+      {work.data.seriesTitle && work.data.seriesSlug && work.data.category === "original" && (
+        <div class="series-index-link">
+          <a href={`/works/originals/${work.data.seriesSlug}`}>
+            {work.data.seriesTitle}: Chapter Index
+          </a>
+        </div>
+      )}
+    </header>
+
+    <hr />
+
+    <Content />
+
+    {(previousChapter || nextChapter) && (
+      <>
+        <hr />
+
+        <nav aria-label="Chapter navigation">
+          <div class="chapter-nav">
+            <div>
+              {previousChapter && (
+                <a href={`/works/read/${previousChapter.id}`}>
+                  ← Previous: {previousChapter.data.chapterTitle ?? previousChapter.data.title}
+                </a>
+              )}
+            </div>
+
+            <div class="chapter-nav-next">
+              {nextChapter && (
+                <a href={`/works/read/${nextChapter.id}`}>
+                  Next: {nextChapter.data.chapterTitle ?? nextChapter.data.title} →
+                </a>
+              )}
+            </div>
+          </div>
+        </nav>
+      </>
+    )}
+  </article>
 </BaseLayout>
 
 <style>
@@ -246,5 +317,15 @@ const nextChapter =
 
 .series-index-link a:hover {
   opacity: 1;
+}
+
+  .breadcrumb {
+  margin: 0 0 1rem 0;
+  font-size: 0.95rem;
+  opacity: 0.8;
+}
+
+.breadcrumb a {
+  text-decoration: none;
 }
 </style>

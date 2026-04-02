@@ -1,10 +1,13 @@
 ---
-title: "Chapter 1"
+title: "TBD"
+category: "fanfiction"
 fandoms: ["Pokemon"]
-isCrossover: false
+fandomSlug: ["pokemon"]
 workType: "series"
 storyGroup: "main"
 seriesTitle: "Redolence"
+seriesSlug: "redolence"
+seriesSummary: "Alexei, a salandit of habit, begins to notice the subtle ways his life is changing as new presences and old routines collide around his weekly game." 
 chapterNumber: 1
 chapterTitle: "Chapter 1"
 summary: "We meet our main character, Alexei, and his nerdy group of Dungeons and Dragapults players."

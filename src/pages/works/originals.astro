@@ -3,49 +3,14 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
 import { getCollection } from "astro:content";
 import type { CollectionEntry } from "astro:content";
 
-interface Props {
-  fandom: string;
-  fandomSlug: string;
-}
-
-export async function getStaticPaths() {
-  const works: CollectionEntry<"works">[] = await getCollection("works");
-
-  const fandomMap = new Map<string, string>();
-
-  for (const work of works) {
-    if (!work.data.published || work.data.category !== "fanfiction") continue;
-    if (work.data.fandoms.length === 0) continue;
-
-    for (let i = 0; i < work.data.fandoms.length; i++) {
-      const fandom = work.data.fandoms[i];
-      const fandomSlug = work.data.fandomSlug[i];
-
-      if (!fandomMap.has(fandomSlug)) {
-        fandomMap.set(fandomSlug, fandom);
-      }
-    }
-  }
-
-  return [...fandomMap.entries()].map(([fandomSlug, fandom]) => ({
-    params: { fandom: fandomSlug },
-    props: { fandom, fandomSlug },
-  }));
-}
-
-const { fandom, fandomSlug } = Astro.props as Props;
-
 const works: CollectionEntry<"works">[] = await getCollection("works");
 
-const fandomWorks = works.filter(
-  (work) =>
-    work.data.published &&
-    work.data.category === "fanfiction" &&
-    work.data.fandoms.includes(fandom)
+const originalWorks = works.filter(
+  (work) => work.data.published && work.data.category === "original"
 );
 
-const seriesWorks = fandomWorks.filter((work) => work.data.workType === "series");
-const oneShots = fandomWorks.filter((work) => work.data.workType === "oneshot");
+const seriesWorks = originalWorks.filter((work) => work.data.workType === "series");
+const oneShots = originalWorks.filter((work) => work.data.workType === "oneshot");
 
 const seriesMap = new Map<string, CollectionEntry<"works">[]>();
 
@@ -87,28 +52,28 @@ const sortedOneShots = [...oneShots].sort((a, b) =>
 );
 ---
 
-<BaseLayout title={`${fandom} Scribls`}>
+<BaseLayout title="Original Works">
   <section class="category-page">
     <p class="breadcrumb">
-      <a href="/works">Scribls!</a> / <span>{fandom}</span>
+      <a href="/works">Scribls!</a> / <span>Original Works</span>
     </p>
 
     <header class="category-header">
-      <h2>{fandom}</h2>
+      <h2>Original Works</h2>
     </header>
 
     <section class="category-section">
       <h3>Series</h3>
 
       {sortedSeries.length === 0 ? (
-        <p>No series yet.</p>
+        <p>No original series yet.</p>
       ) : (
         <div class="series-grid">
           {sortedSeries.map((series) => (
             <article class="series-card">
               <h4>
                 {series.seriesSlug ? (
-                  <a href={`/works/${fandomSlug}/${series.seriesSlug}`}>
+                  <a href={`/works/originals/${series.seriesSlug}`}>
                     {series.seriesTitle}
                   </a>
                 ) : (
@@ -136,7 +101,7 @@ const sortedOneShots = [...oneShots].sort((a, b) =>
       <h3>One-Shots</h3>
 
       {sortedOneShots.length === 0 ? (
-        <p>No one-shots yet.</p>
+        <p>No original one-shots yet.</p>
       ) : (
         <div class="oneshot-list">
           {sortedOneShots.map((work) => (
@@ -146,7 +111,6 @@ const sortedOneShots = [...oneShots].sort((a, b) =>
               </h4>
 
               <p class="oneshot-summary">{work.data.summary}</p>
-
               <p class="oneshot-meta">Word Count: {work.data.wordCount}</p>
             </article>
           ))}

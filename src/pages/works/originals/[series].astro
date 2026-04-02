@@ -4,8 +4,6 @@ import { getCollection } from "astro:content";
 import type { CollectionEntry } from "astro:content";
 
 interface Props {
-  fandom: string;
-  fandomSlug: string;
   series: string;
   seriesTitle: string;
 }
@@ -14,50 +12,34 @@ export async function getStaticPaths() {
   const works: CollectionEntry<"works">[] = await getCollection("works");
 
   const seen = new Set<string>();
-  const paths: {
-    fandom: string;
-    fandomSlug: string;
-    series: string;
-    seriesTitle: string;
-  }[] = [];
+  const paths: { series: string; seriesTitle: string }[] = [];
 
   for (const work of works) {
-    if (!work.data.published || work.data.category !== "fanfiction") continue;
+    if (!work.data.published || work.data.category !== "original") continue;
     if (work.data.workType !== "series") continue;
     if (!work.data.seriesTitle || !work.data.seriesSlug) continue;
 
-    for (let i = 0; i < work.data.fandoms.length; i++) {
-      const fandom = work.data.fandoms[i];
-      const fandomSlug = work.data.fandomSlug[i];
-      const key = `${fandomSlug}::${work.data.seriesSlug}`;
+    if (seen.has(work.data.seriesSlug)) continue;
+    seen.add(work.data.seriesSlug);
 
-      if (seen.has(key)) continue;
-      seen.add(key);
-
-      paths.push({
-        fandom,
-        fandomSlug,
-        series: work.data.seriesSlug,
-        seriesTitle: work.data.seriesTitle,
-      });
-    }
+    paths.push({
+      series: work.data.seriesSlug,
+      seriesTitle: work.data.seriesTitle,
+    });
   }
 
   return paths.map((entry) => ({
     params: {
-      fandom: entry.fandomSlug,
       series: entry.series,
     },
     props: {
-      fandom: entry.fandom,
-      fandomSlug: entry.fandomSlug,
       series: entry.series,
       seriesTitle: entry.seriesTitle,
     },
   }));
 }
 
-const { fandom, fandomSlug, series, seriesTitle } = Astro.props as Props;
+const { series, seriesTitle } = Astro.props as Props;
 
 const works: CollectionEntry<"works">[] = await getCollection("works");
 
@@ -65,10 +47,9 @@ const seriesWorks = works
   .filter(
     (work) =>
       work.data.published &&
-      work.data.category === "fanfiction" &&
+      work.data.category === "original" &&
       work.data.workType === "series" &&
-      work.data.seriesSlug === series &&
-      work.data.fandoms.includes(fandom)
+      work.data.seriesSlug === series
   )
   .sort((a, b) => (a.data.chapterNumber ?? 0) - (b.data.chapterNumber ?? 0));
 
@@ -77,11 +58,11 @@ const sideStories = seriesWorks.filter((work) => work.data.storyGroup === "side"
 const seriesSummary = seriesWorks[0]?.data.seriesSummary ?? "";
 ---
 
-<BaseLayout title={`${seriesTitle} - ${fandom}`}>
+<BaseLayout title={`${seriesTitle} - Original Works`}>
   <section class="series-page">
     <p class="breadcrumb">
       <a href="/works">Scribls!</a> /
-      <a href={`/works/${fandomSlug}`}>{fandom}</a> /
+      <a href="/works/originals">Original Works</a> /
       <span>{seriesTitle}</span>
     </p>
 
@@ -123,16 +104,11 @@ const seriesSummary = seriesWorks[0]?.data.seriesSummary ?? "";
           {sideStories.map((work) => (
             <article class="chapter-card">
               <h4>
-                <a href={`/works/read/${work.id}`}>
-                  {work.data.title}
-                </a>
+                <a href={`/works/read/${work.id}`}>{work.data.title}</a>
               </h4>
 
               <p class="chapter-summary">{work.data.summary}</p>
               <p class="chapter-meta">Word Count: {work.data.wordCount}</p>
-              {work.data.contentWarnings && (
-                <p class="chapter-warning">CW: {work.data.contentWarnings}</p>
-              )}
             </article>
           ))}
         </div>
@@ -208,10 +184,5 @@ const seriesSummary = seriesWorks[0]?.data.seriesSummary ?? "";
   .chapter-meta {
     margin: 0;
     color: #cfc7bb;
-  }
-
-  .chapter-warning {
-    margin-top: 0.75rem;
-    font-style: italic;
   }
 </style>

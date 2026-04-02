@@ -15,13 +15,16 @@ const { title } = Astro.props;
     <title>{title}</title>
   </head>
   <body>
-    <header>
-      <h1><a href="/">KoblScribl</a></h1>
-      <nav>
-        <a href="/">Home</a>
-        <a href="/works">List of Scribls!</a>
-      </nav>
-    </header>
+    <header class="site-header">
+  <div class="site-header-inner">
+    <h1><a href="/">KoblScribl</a></h1>
+
+    <nav class="site-nav" aria-label="Main navigation">
+      <a href="/">Home</a>
+      <a href="/works">Scribls!</a>
+    </nav>
+  </div>
+</header>
 
     <main>
       <slot />
@@ -38,31 +41,6 @@ const { title } = Astro.props;
     line-height: 1.75;
   }
 
-  header {
-    padding: 1rem 2rem;
-    border-bottom: 1px solid #2a2a2a;
-    background: #141414;
-  }
-
-  h1 {
-    margin: 0;
-    font-size: 1.5rem;
-  }
-
-  nav {
-    margin-top: 0.5rem;
-  }
-
-  nav a {
-    margin-right: 1rem;
-    font-size: 0.9rem;
-    opacity: 0.8;
-  }
-
-  nav a:hover {
-    opacity: 1;
-  }
-
   :global(a) {
     color: #d4b26a;
     text-decoration: none;
@@ -72,8 +50,49 @@ const { title } = Astro.props;
     text-decoration: underline;
   }
 
+  .site-header {
+    border-bottom: 1px solid #2a2a2a;
+    background: #141414;
+  }
+
+  .site-header-inner {
+    max-width: 950px;
+    margin: 0 auto;
+    padding: 1rem 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+  }
+
+  .site-header h1 {
+    margin: 0;
+    font-size: 1.5rem;
+    line-height: 1.2;
+  }
+
+  .site-header h1 a {
+    color: #e8e6e3;
+    text-decoration: none;
+  }
+
+  .site-nav {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+  }
+
+  .site-nav a {
+    font-size: 0.95rem;
+    opacity: 0.9;
+  }
+
+  .site-nav a:hover {
+    opacity: 1;
+  }
+
   main {
-    max-width: 750px;
+    max-width: 800px;
     margin: 0 auto;
     padding: 2rem;
   }
@@ -111,6 +130,4 @@ const { title } = Astro.props;
   li {
     margin: 0.4rem 0;
   }
-
-  
 </style>

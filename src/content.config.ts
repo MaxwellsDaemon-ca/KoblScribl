@@ -7,13 +7,16 @@ const works = defineCollection({
   schema: z.object({
     title: z.string(),
 
+    category: z.enum(["fanfiction", "crossover", "original"]),
     fandoms: z.array(z.string()),
-    isCrossover: z.boolean().default(false),
+    fandomSlug: z.array(z.string()),
 
     workType: z.enum(["series", "oneshot"]),
     storyGroup: z.enum(["main", "side"]).optional(),
 
     seriesTitle: z.string().optional(),
+    seriesSlug: z.string().optional(),
+    seriesSummary: z.string().optional(),
     chapterNumber: z.number().optional(),
     chapterTitle: z.string().optional(),
 
