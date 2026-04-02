@@ -1,0 +1,48 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import { getCollection } from "astro:content";
+import type { CollectionEntry } from "astro:content";
+
+const works: CollectionEntry<"works">[] = await getCollection("works");
+
+// Only show published works
+const publishedWorks = works.filter(w => w.data.published);
+
+// Separate crossovers
+const crossovers = publishedWorks.filter(w => w.data.isCrossover);
+const normalWorks = publishedWorks.filter(w => !w.data.isCrossover);
+
+// Build fandom map
+const fandomMap = new Map<string, CollectionEntry<"works">[]>();
+
+for (const work of normalWorks) {
+  for (const fandom of work.data.fandoms) {
+    if (!fandomMap.has(fandom)) {
+      fandomMap.set(fandom, []);
+    }
+    fandomMap.get(fandom)!.push(work);
+  }
+}
+
+const sortedFandoms = [...fandomMap.entries()].sort(([a], [b]) =>
+  a.localeCompare(b)
+);
+---
+
+<BaseLayout title="KoblScribls!">
+  <h2>Fandoms</h2>
+
+  <ul>
+    {sortedFandoms.map(([fandom, works]) => (
+      <li>
+        <a href={`/works/${encodeURIComponent(fandom)}`}>
+  {fandom}
+</a>{" "}
+        ({works.length} works)
+      </li>
+    ))}
+  </ul>
+
+  <h2>Crossovers</h2>
+  <p>{crossovers.length} crossover works</p>
+</BaseLayout>

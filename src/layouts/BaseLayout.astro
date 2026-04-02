@@ -19,6 +19,7 @@ const { title } = Astro.props;
       <h1><a href="/">KoblScribl</a></h1>
       <nav>
         <a href="/">Home</a>
+        <a href="/works">List of Scribls!</a>
       </nav>
     </header>
 
@@ -31,38 +32,85 @@ const { title } = Astro.props;
 <style>
   :global(body) {
     margin: 0;
-    font-family: Georgia, serif;
-    background: #111;
-    color: #f5f5f5;
-    line-height: 1.7;
+    font-family: "Georgia", "Times New Roman", serif;
+    background: #0f0f0f;
+    color: #e8e6e3;
+    line-height: 1.75;
   }
 
   header {
     padding: 1rem 2rem;
-    border-bottom: 1px solid #333;
+    border-bottom: 1px solid #2a2a2a;
+    background: #141414;
   }
 
-  nav a,
-  h1 a {
-    color: #f5f5f5;
+  h1 {
+    margin: 0;
+    font-size: 1.5rem;
+  }
+
+  nav {
+    margin-top: 0.5rem;
+  }
+
+  nav a {
+    margin-right: 1rem;
+    font-size: 0.9rem;
+    opacity: 0.8;
+  }
+
+  nav a:hover {
+    opacity: 1;
+  }
+
+  :global(a) {
+    color: #d4b26a;
     text-decoration: none;
   }
 
+  :global(a:hover) {
+    text-decoration: underline;
+  }
+
   main {
-    max-width: 800px;
+    max-width: 750px;
     margin: 0 auto;
     padding: 2rem;
   }
 
-  :global(a) {
-  color: #d8c38a;
-}
+  article {
+    margin-top: 1.5rem;
+  }
 
-:global(a:visited) {
-  color: #c7a86b;
-}
+  h2 {
+    margin-top: 0;
+    font-size: 1.8rem;
+  }
 
-:global(a:hover) {
-  color: #f0dca2;
-}
+  h3 {
+    margin-top: 2rem;
+    font-size: 1.2rem;
+    border-bottom: 1px solid #2a2a2a;
+    padding-bottom: 0.3rem;
+  }
+
+  p {
+    margin: 0.8rem 0;
+  }
+
+  hr {
+    border: none;
+    border-top: 1px solid #2a2a2a;
+    margin: 2rem 0;
+  }
+
+  ul {
+    padding-left: 1.2rem;
+  }
+
+  li {
+    margin: 0.4rem 0;
+  }
+
+  
 </style>

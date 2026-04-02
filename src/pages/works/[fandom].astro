@@ -1,0 +1,101 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import { getCollection } from "astro:content";
+import type { CollectionEntry } from "astro:content";
+
+interface Props {
+  fandom: string;
+}
+
+export async function getStaticPaths() {
+  const works: CollectionEntry<"works">[] = await getCollection("works");
+
+  const fandomSet = new Set<string>();
+
+  for (const work of works) {
+    if (!work.data.published || work.data.isCrossover) continue;
+
+    for (const fandom of work.data.fandoms) {
+      fandomSet.add(fandom);
+    }
+  }
+
+  return [...fandomSet].map((fandom) => ({
+    params: { fandom },
+    props: { fandom },
+  }));
+}
+
+const { fandom } = Astro.props as Props;
+
+const works: CollectionEntry<"works">[] = await getCollection("works");
+
+const fandomWorks = works.filter(
+  (work) =>
+    work.data.published &&
+    !work.data.isCrossover &&
+    work.data.fandoms.includes(fandom)
+);
+
+const seriesWorks = fandomWorks.filter((work) => work.data.workType === "series");
+const oneShots = fandomWorks.filter((work) => work.data.workType === "oneshot");
+
+const seriesMap = new Map<string, CollectionEntry<"works">[]>();
+
+for (const work of seriesWorks) {
+  const seriesTitle = work.data.seriesTitle ?? "Untitled Series";
+
+  if (!seriesMap.has(seriesTitle)) {
+    seriesMap.set(seriesTitle, []);
+  }
+
+  seriesMap.get(seriesTitle)!.push(work);
+}
+
+for (const [, entries] of seriesMap) {
+  entries.sort(
+    (a, b) => (a.data.chapterNumber ?? 0) - (b.data.chapterNumber ?? 0)
+  );
+}
+
+const sortedSeries = [...seriesMap.entries()].sort(([a], [b]) =>
+  a.localeCompare(b)
+);
+
+const sortedOneShots = [...oneShots].sort((a, b) =>
+  a.data.title.localeCompare(b.data.title)
+);
+---
+
+<BaseLayout title={`${fandom} Works`}>
+  <h2>{fandom}</h2>
+
+  <h3>Series</h3>
+  {sortedSeries.length === 0 ? (
+    <p>No series yet.</p>
+  ) : (
+    <ul>
+      {sortedSeries.map(([seriesTitle, entries]) => (
+        <li>
+          <a href={`/works/${encodeURIComponent(fandom)}/${encodeURIComponent(seriesTitle)}`}>
+            {seriesTitle}
+          </a>{" "}
+          ({entries.length} chapters)
+        </li>
+      ))}
+    </ul>
+  )}
+
+  <h3>One-Shots</h3>
+  {sortedOneShots.length === 0 ? (
+    <p>No one-shots yet.</p>
+  ) : (
+    <ul>
+      {sortedOneShots.map((work) => (
+        <li>
+          <a href={`/works/read/${work.id}`}>{work.data.title}</a>
+        </li>
+      ))}
+    </ul>
+  )}
+</BaseLayout>
