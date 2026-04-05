@@ -1,0 +1,255 @@
+.texting-block {
+  margin: 1.5rem 0;
+}
+
+.texting-title {
+  margin: 0 0 0.85rem 0;
+  font-size: 0.95rem;
+  text-align: center;
+  opacity: 0.75;
+  font-style: italic;
+}
+
+.texting-message {
+  display: flex;
+  margin: 0.35rem 0;
+}
+
+.texting-bubble-wrapper {
+  display: flex;
+  flex-direction: column;
+  max-width: 75%;
+}
+
+.texting-meta {
+  display: flex;
+  align-items: baseline;
+  gap: 0.45rem;
+  margin-bottom: 0.2rem;
+  padding-inline: 0.25rem;
+}
+
+/* Base meta styles (no fixed color) */
+.texting-name {
+  font-size: 0.72rem;
+  text-transform: capitalize;
+}
+
+.texting-time {
+  font-size: 0.68rem;
+}
+
+/* Default alignment-based colors */
+.texting-message.is-sender .texting-name,
+.texting-message.is-sender .texting-time {
+  color: #c7d2fe;
+}
+
+.texting-message.is-recipient .texting-name,
+.texting-message.is-recipient .texting-time {
+  color: #6b7280;
+}
+
+.texting-bubble {
+  padding: 0.7rem 0.95rem;
+  border-radius: 1.15rem;
+  line-height: 1.45;
+  word-break: break-word;
+  box-shadow: 0 1px 2px rgb(0 0 0 / 0.12);
+  font-weight: 500;
+}
+
+.texting-paragraph {
+  margin: 0;
+}
+
+.texting-paragraph + .texting-paragraph {
+  margin-top: 0.75rem;
+}
+
+/* Alignment */
+.texting-message.is-sender {
+  justify-content: flex-end;
+}
+
+.texting-message.is-sender .texting-bubble-wrapper {
+  align-items: flex-end;
+}
+
+.texting-message.is-sender .texting-meta {
+  justify-content: flex-end;
+}
+
+.texting-message.is-recipient {
+  justify-content: flex-start;
+}
+
+.texting-message.is-recipient .texting-bubble-wrapper {
+  align-items: flex-start;
+}
+
+.texting-message.is-recipient .texting-meta {
+  justify-content: flex-start;
+}
+
+/* ========================= */
+/* BUBBLE COLORS + TEXT */
+/* ========================= */
+
+.texting-message.color-blue .texting-bubble {
+  background: #2563eb;
+  color: #ffffff;
+}
+
+.texting-message.color-green .texting-bubble {
+  background: #16a34a;
+  color: #ffffff;
+}
+
+.texting-message.color-gray .texting-bubble,
+.texting-message.color-grey .texting-bubble {
+  background: #d1d5db;
+  color: #111827;
+}
+
+.texting-message.color-gold .texting-bubble {
+  background: #d97706;
+  color: #ffffff;
+}
+
+.texting-message.color-purple .texting-bubble {
+  background: #7c3aed;
+  color: #ffffff;
+}
+
+.texting-message.color-red .texting-bubble {
+  background: #dc2626;
+  color: #ffffff;
+}
+
+.texting-message.color-pink .texting-bubble {
+  background: #db2777;
+  color: #ffffff;
+}
+
+.texting-message.color-teal .texting-bubble {
+  background: #0f766e;
+  color: #ffffff;
+}
+
+.texting-message.color-slate .texting-bubble {
+  background: #475569;
+  color: #ffffff;
+}
+
+/* ========================= */
+/* META COLORS (NAME + TIME) */
+/* ========================= */
+
+.texting-message.color-blue .texting-name,
+.texting-message.color-blue .texting-time {
+  color: #bfdbfe;
+}
+
+.texting-message.color-green .texting-name,
+.texting-message.color-green .texting-time {
+  color: #bbf7d0;
+}
+
+.texting-message.color-gray .texting-name,
+.texting-message.color-gray .texting-time,
+.texting-message.color-grey .texting-name,
+.texting-message.color-grey .texting-time {
+  color: #4b5563;
+}
+
+.texting-message.color-gold .texting-name,
+.texting-message.color-gold .texting-time {
+  color: #fde68a;
+}
+
+.texting-message.color-purple .texting-name,
+.texting-message.color-purple .texting-time {
+  color: #ddd6fe;
+}
+
+.texting-message.color-red .texting-name,
+.texting-message.color-red .texting-time {
+  color: #fecaca;
+}
+
+.texting-message.color-pink .texting-name,
+.texting-message.color-pink .texting-time {
+  color: #fbcfe8;
+}
+
+.texting-message.color-teal .texting-name,
+.texting-message.color-teal .texting-time {
+  color: #99f6e4;
+}
+
+.texting-message.color-slate .texting-name,
+.texting-message.color-slate .texting-time {
+  color: #cbd5e1;
+}
+
+/* ========================= */
+/* SYSTEM MESSAGES */
+/* ========================= */
+
+.texting-system-message {
+  margin: 0.85rem auto;
+  text-align: center;
+  font-size: 0.82rem;
+  opacity: 0.9;
+}
+
+.texting-system-line {
+  font-style: italic;
+}
+
+.texting-system-time {
+  display: block;
+  margin-top: 0.2rem;
+  font-size: 0.68rem;
+  color: #6b7280;
+}
+
+/* System message colors */
+
+.texting-system-message.color-slate {
+  color: #94a3b8;
+}
+
+.texting-system-message.color-gray,
+.texting-system-message.color-grey {
+  color: #9ca3af;
+}
+
+.texting-system-message.color-gold {
+  color: #fbbf24;
+}
+
+.texting-system-message.color-blue {
+  color: #93c5fd;
+}
+
+.texting-system-message.color-green {
+  color: #86efac;
+}
+
+.texting-system-message.color-purple {
+  color: #c4b5fd;
+}
+
+.texting-system-message.color-red {
+  color: #fca5a5;
+}
+
+.texting-system-message.color-pink {
+  color: #f9a8d4;
+}
+
+.texting-system-message.color-teal {
+  color: #99f6e4;
+}

@@ -64,33 +64,33 @@ Harry hummed thoughtfully at that, imagining a flock of birds roosting on him.
 
 “No offense to Dad, Mum, but I hope I get yours. Snakes are just so much simpler.” He gestured to the basking constrictor in front of them. “I mean, what an awesome life. Sitting there, soaking up light. Even if nosy, annoying boys tap the glass all the time.”
 
-***I appreciate you not doing the same, snakelet.***
+:parsel[I appreciate you not doing the same, snakelet.]
 
 Harry froze, staring at the snake. Its mouth had moved. It spoke?  
 
 He looked at his mum – she was staring back with the same wide-eyed shock.
 
-***You speak?*** Harry asked, leaning closer to the glass.
+:parsel[You speak?] Harry asked, leaning closer to the glass.
 
-The snake lifted her head – her, judging by the voice, but he remembered he wasn’t supposed to assume – and hissed smoothly, ***Yes. Just as you and your dam have been speaking for the past five minutes.***
+The snake lifted her head – her, judging by the voice, but he remembered he wasn’t supposed to assume – and hissed smoothly, :parsel[Yes. Just as you and your dam have been speaking for the past five minutes.]
 
 Lily smacked her forehead lightly.  
 
-***Of course! Stupid Lily! Basilisk!*** **Of course** ***I can speak to normal snakes too!***
+:parsel[Of course! Stupid Lily! Basilisk! Of course I can speak to normal snakes too!]
 
-She took a breath, turned to Harry, and said aloud, ***Son***, she paused, noticing she was still speaking parseltongue, “shit – don’t repeat that – son. We have an ability called Parseltongue. It’s native to mainly India, but those with certain inheritances can speak it too. It lets us talk to…”
+She took a breath, turned to Harry, and said aloud, :parsel[Hashee]{translation="Son"}, she paused, noticing she was still speaking parseltongue, “shit – don’t repeat that – son. We have an ability called Parseltongue. It’s native to mainly India, but those with certain inheritances can speak it too. It lets us talk to…”
 
-***Nagini.***
+:parsel[Nagini.]
 
 “…Nagini here.”  
 
 She blinked.  
 
-***Wait. That wasn’t Parseltongue. How did you understand*** **that?**
+:parsel[Wait. That wasn’t Parseltongue. How did you understand that?]
 
 The snake rolled her eyes in the most unimpressed serpentine way possible.  
 
-***I took a class at Oxford.***
+:parsel[I took a class at Oxford.]
 
 Harry nodded solemnly as if this made perfect sense.  
 
@@ -98,4 +98,4 @@ Lily, however, continued staring.
 
 Nagini sagged slightly, giving up the joke.  
 
-***Fine. No, I didn’t attend your human universities. I used to be a witch. My family carries a blood curse – turns our Naga form into this lovely non-magical shape and eventually locks us in it. Can’t change back. Can’t speak English. Got scooped off the streets by animal control like a lost pet and ended up here. There. Explanation.***
+:parsel[Fine. No, I didn’t attend your human universities. I used to be a witch. My family carries a blood curse – turns our Naga form into this lovely non-magical shape and eventually locks us in it. Can’t change back. Can’t speak English. Got scooped off the streets by animal control like a lost pet and ended up here. There. Explanation.]{tone="aggressive"}
