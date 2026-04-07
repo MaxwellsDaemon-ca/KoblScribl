@@ -101,6 +101,11 @@
   color: #ffffff;
 }
 
+.texting-message.color-dark-blue .texting-bubble {
+  background: #041d6e;
+  color: #ffffff;
+}
+
 .texting-message.color-green .texting-bubble {
   background: #16a34a;
   color: #ffffff;
@@ -149,6 +154,11 @@
 .texting-message.color-blue .texting-name,
 .texting-message.color-blue .texting-time {
   color: #bfdbfe;
+}
+
+.texting-message.color-dark-blue .texting-name,
+.texting-message.color-dark-blue .texting-time {
+  color: #7f9dc0;
 }
 
 .texting-message.color-green .texting-name,
@@ -219,6 +229,10 @@
 
 .texting-system-message.color-slate {
   color: #94a3b8;
+}
+
+.texting-system-message.color-dark-blue {
+  color: #7f9dc0;
 }
 
 .texting-system-message.color-gray,

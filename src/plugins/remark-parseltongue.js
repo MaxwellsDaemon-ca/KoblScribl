@@ -1,21 +1,13 @@
 import { visit } from "unist-util-visit";
 
-console.log("LOADING REMARK PARSEL PLUGIN FROM:", import.meta.url);
 
 export default function remarkParsel() {
   return (tree) => {
-    console.log("remarkParsel transformer ran");
 
     visit(
       tree,
       ["textDirective", "leafDirective", "containerDirective"],
       (node, index, parent) => {
-        console.log("DIRECTIVE NODE FOUND:", {
-          type: node.type,
-          name: node.name,
-          attributes: node.attributes,
-          index,
-        });
 
         if (node.name !== "parsel") {
           return;
@@ -24,17 +16,12 @@ export default function remarkParsel() {
         const text = extractNodeText(node);
         const attrs = node.attributes || {};
 
-        console.log("PARSEL NODE TEXT:", text);
-        console.log("PARSEL NODE ATTRS:", attrs);
-
         if (!parent || typeof index !== "number") {
-          console.log("SKIPPING PARSEL NODE: missing parent or index");
           return;
         }
 
         if (node.type === "textDirective" || node.type === "leafDirective") {
           const html = buildInlineParsel(text, attrs);
-          console.log("INLINE PARSEL HTML:", html);
 
           parent.children[index] = {
             type: "html",
@@ -46,7 +33,6 @@ export default function remarkParsel() {
 
         if (node.type === "containerDirective") {
           const html = buildBlockParsel(node.children ?? [], attrs);
-          console.log("BLOCK PARSEL HTML:", html);
 
           parent.children[index] = {
             type: "html",

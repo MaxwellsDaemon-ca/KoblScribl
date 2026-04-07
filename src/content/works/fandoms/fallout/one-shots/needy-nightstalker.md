@@ -6,7 +6,8 @@ fandomSlug: ["fallout"]
 workType: "oneshot"
 summary: "A wastelander hiding from some nearby raiders finds an interesting partner to hunker down with."
 wordCount: 4040
-contentWarnings: "NSFW! Mentions of gloryholes and self-sex, includes rimming, anal, and a very sassy nightstalker."
+contentWarnings: "Mentions of gloryholes and self-sex, includes rimming, anal, and a very sassy nightstalker."
+nsfw: true
 ---
 
 His boots crunched over the rough, sun-baked earth, each step kicking up a cloud of dust that clung to his jeans. The horizon shimmered with heatwaves, broken only by the skeletal remains of long-abandoned vehicles and the occasional twisted metal sign. A black crow watched him from the rusting hulk of a pickup truck, its beady eyes gleaming with curiosity. He wiped his brow with the back of his hand, leaving a streak of dirt across his forehead. His throat felt as dry as the cracked desert floor beneath him. Ahead loomed the crumbling shell of a gas station, its once-bright colors faded to ghostly pastels. He quickened his pace.

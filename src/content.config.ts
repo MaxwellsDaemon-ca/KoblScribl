@@ -23,9 +23,11 @@ const works = defineCollection({
     summary: z.string(),
     wordCount: z.number(),
     contentWarnings: z.string().optional(),
+    authorsNote: z.string().optional(),
 
     status: z.enum(["draft", "published", "complete", "hiatus"]).default("published"),
     published: z.boolean().default(true),
+    nsfw: z.boolean().default(false),
   }),
 });
 

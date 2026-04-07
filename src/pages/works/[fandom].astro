@@ -2,11 +2,14 @@
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import { getCollection } from "astro:content";
 import type { CollectionEntry } from "astro:content";
+import { marked } from "marked";
 
 interface Props {
   fandom: string;
   fandomSlug: string;
 }
+
+const md = (text: string) => marked.parse(text);
 
 export async function getStaticPaths() {
   const works: CollectionEntry<"works">[] = await getCollection("works");
@@ -78,6 +81,7 @@ const sortedSeries = [...seriesMap.entries()]
       mainCount,
       sideCount,
       summary: entries[0]?.data.seriesSummary ?? "",
+      containsNsfw: entries.some((entry) => entry.data.nsfw),
     };
   })
   .sort((a, b) => a.seriesTitle.localeCompare(b.seriesTitle));
@@ -108,13 +112,19 @@ const sortedOneShots = [...oneShots].sort((a, b) =>
             <article class="series-card">
               <h4>
                 {series.seriesSlug ? (
-                  <a href={`/works/${fandomSlug}/${series.seriesSlug}`}>
+                  <a href={`/works/${fandomSlug}/${series.seriesSlug}`}
+                  class:list={{ "nsfw-link": series.containsNsfw }}
+                  data-nsfw={series.containsNsfw ? "true" : "false"}>
                     {series.seriesTitle}
                   </a>
                 ) : (
                   <span>{series.seriesTitle}</span>
                 )}
               </h4>
+
+              {series.containsNsfw && (
+                <p class="nsfw-warning">Contains NSFW content!</p>
+              )}
 
               <p class="series-counts">
                 {series.totalCount} chapter{series.totalCount === 1 ? "" : "s"}
@@ -125,7 +135,12 @@ const sortedOneShots = [...oneShots].sort((a, b) =>
                 <li>{series.sideCount} side</li>
               </ul>
 
-              {series.summary && <p class="series-summary">{series.summary}</p>}
+              {series.summary && (
+                <div
+                  class="series-summary"
+                  set:html={md(series.summary)}
+                />
+              )}
             </article>
           ))}
         </div>
@@ -142,8 +157,16 @@ const sortedOneShots = [...oneShots].sort((a, b) =>
           {sortedOneShots.map((work) => (
             <article class="oneshot-card">
               <h4>
-                <a href={`/works/read/${work.id}`}>{work.data.title}</a>
+                <a href={`/works/read/${work.id}`}
+                class:list={{ "nsfw-link": work.data.nsfw}}
+                data-nsfw={work.data.nsfw ? "true" : "false"}>
+                  {work.data.title}
+                  </a>
               </h4>
+
+              {work.data.nsfw && (
+                <p class="nsfw-warning">Contains NSFW content!</p>
+              )}
 
               <p class="oneshot-summary">{work.data.summary}</p>
 
@@ -154,7 +177,61 @@ const sortedOneShots = [...oneShots].sort((a, b) =>
       )}
     </section>
   </section>
+
+  <div id="nsfw-modal" class="nsfw-modal hidden" aria-hidden="true">
+  <div class="nsfw-modal-content">
+    <h3>NSFW Content Warning</h3>
+    <p>
+      This work contains NSFW content. Please continue only if you are 18+ or of legal age in your region.
+    </p>
+
+    <div class="nsfw-modal-actions">
+      <button id="nsfw-cancel" type="button">Cancel</button>
+      <button id="nsfw-confirm" type="button">I am 18+</button>
+    </div>
+  </div>
+</div>
 </BaseLayout>
+
+<script>
+  let pendingHref: string | null = null;
+
+  const modal = document.getElementById("nsfw-modal");
+  const confirmButton = document.getElementById("nsfw-confirm");
+  const cancelButton = document.getElementById("nsfw-cancel");
+
+  const nsfwLinks = document.querySelectorAll<HTMLAnchorElement>("a[data-nsfw='true']");
+
+  for (const link of nsfwLinks) {
+    link.addEventListener("click", (event) => {
+      const alreadyConfirmed = sessionStorage.getItem("nsfw-confirmed") === "true";
+
+      if (alreadyConfirmed) {
+        return;
+      }
+
+      event.preventDefault();
+      pendingHref = link.href;
+
+      modal?.classList.remove("hidden");
+      modal?.setAttribute("aria-hidden", "false");
+    });
+  }
+
+  cancelButton?.addEventListener("click", () => {
+    pendingHref = null;
+    modal?.classList.add("hidden");
+    modal?.setAttribute("aria-hidden", "true");
+  });
+
+  confirmButton?.addEventListener("click", () => {
+    sessionStorage.setItem("nsfw-confirmed", "true");
+
+    if (pendingHref) {
+      window.location.href = pendingHref;
+    }
+  });
+</script>
 
 <style>
   .breadcrumb {
@@ -233,15 +310,76 @@ const sortedOneShots = [...oneShots].sort((a, b) =>
     margin: 0.25rem 0;
   }
 
-  .series-summary,
-  .oneshot-summary {
-    margin: 0;
-    opacity: 0.95;
+  .series-summary p {
+    margin: 0 0 0.75rem 0;
+  }
+
+  .series-summary p:last-child {
+    margin-bottom: 0;
+  }
+
+  .oneshot-summary p {
+    margin: 0 0 0.75rem 0;
+  }
+
+  .oneshot-summary p:last-child {
+    margin-bottom: 0;
   }
 
   .oneshot-list {
     display: flex;
     flex-direction: column;
     gap: 1rem;
+  }
+
+  .nsfw-warning {
+    margin: 0.35rem 0 0 0;
+    font-size: 0.9rem;
+    font-style: italic;
+    color: #d9a3a3;
+  }
+
+  .nsfw-modal.hidden {
+    display: none;
+  }
+
+  .nsfw-modal {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.75);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1rem;
+    z-index: 1000;
+  }
+
+  .nsfw-modal-content {
+    max-width: 460px;
+    width: 100%;
+    background: #151515;
+    border: 1px solid #2a2a2a;
+    border-radius: 0.75rem;
+    padding: 1.25rem;
+  }
+
+  .nsfw-modal-content h3 {
+    margin-top: 0;
+  }
+
+  .nsfw-modal-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 0.75rem;
+    margin-top: 1rem;
+  }
+
+  .nsfw-modal-actions button {
+    padding: 0.6rem 0.9rem;
+    border-radius: 0.5rem;
+    border: 1px solid #3a3a3a;
+    background: #1d1d1d;
+    color: #e8e6e3;
+    cursor: pointer;
   }
 </style>

@@ -21,6 +21,7 @@ const normalWorks = publishedWorks.filter(
 
 type FandomStats = {
   fandom: string;
+  fandomSlug: string;
   works: CollectionEntry<"works">[];
   totalWorks: number;
   seriesCount: number;
@@ -50,6 +51,7 @@ const fandomStats: FandomStats[] = [...fandomMap.entries()]
 
     return {
       fandom,
+      fandomSlug: fandomWorks[0].data.fandomSlug[0],
       works: fandomWorks,
       totalWorks: fandomWorks.length,
       seriesCount: seriesTitles.size,
@@ -77,13 +79,6 @@ const originalSeriesTitles = new Set(
 const originalOneShots = originalWorks.filter(
   (work) => work.data.workType === "oneshot"
 );
-
-function slugify(str: string) {
-  return str
-    .toLowerCase()
-    .replace(/[^a-z0-9]+/g, "-")
-    .replace(/(^-|-$)/g, "");
-}
 ---
 
 <BaseLayout title="Works">
@@ -102,7 +97,7 @@ function slugify(str: string) {
           {fandomStats.map((entry) => (
             <article class="category-card">
               <h4>
-                <a href={`/works/${slugify(entry.fandom)}`}>
+                <a href={`/works/${entry.fandomSlug}`}>
                   {entry.fandom}
                 </a>
               </h4>
@@ -240,5 +235,4 @@ function slugify(str: string) {
   .category-meta li {
     margin: 0.25rem 0;
   }
-</style>
 </style>

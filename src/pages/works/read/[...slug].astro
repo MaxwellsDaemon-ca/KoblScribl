@@ -152,6 +152,14 @@ const nextChapter =
         <p class="content-warnings">CW: {work.data.contentWarnings}</p>
       )}
 
+      {work.data.authorsNote && (
+  <div class="authors-note">
+    {work.data.authorsNote.split("\n\n").map((para) => (
+      <p>{para}</p>
+    ))}
+  </div>
+)}
+
       {work.data.seriesTitle && work.data.seriesSlug && work.data.category === "fanfiction" && (
         <div class="series-index-link">
           <a href={`/works/${work.data.fandomSlug[0]}/${work.data.seriesSlug}`}>
@@ -273,6 +281,21 @@ const nextChapter =
     margin: 0;
     font-style: italic;
   }
+
+  .authors-note {
+  font-size: 0.9rem;
+  font-style: italic;
+  opacity: 0.9;
+  margin-top: 1rem;
+}
+
+.authors-note p {
+  margin: 0 0 0.75rem 0;
+}
+
+.authors-note p:last-child {
+  margin-bottom: 0;
+}
 
   .word-count {
     margin: 0;

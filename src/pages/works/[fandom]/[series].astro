@@ -2,6 +2,9 @@
 import BaseLayout from "../../../layouts/BaseLayout.astro";
 import { getCollection } from "astro:content";
 import type { CollectionEntry } from "astro:content";
+import { marked } from "marked";
+
+const md = (text: string) => marked.parse(text);
 
 interface Props {
   fandom: string;
@@ -87,7 +90,12 @@ const seriesSummary = seriesWorks[0]?.data.seriesSummary ?? "";
 
     <header class="series-header">
       <h2>{seriesTitle}</h2>
-      {seriesSummary && <p class="series-summary">{seriesSummary}</p>}
+      {seriesSummary && (
+        <div
+          class="series-summary"
+          set:html={md(seriesSummary)}
+        />
+      )}
     </header>
 
     <section class="series-section">
@@ -162,10 +170,12 @@ const seriesSummary = seriesWorks[0]?.data.seriesSummary ?? "";
     margin-bottom: 0.5rem;
   }
 
-  .series-summary {
-    margin: 0;
-    max-width: 60ch;
-    opacity: 0.95;
+  .series-summary p {
+    margin: 0 0 0.75rem 0;
+  }
+
+  .series-summary p:last-child {
+    margin-bottom: 0;
   }
 
   .series-section {

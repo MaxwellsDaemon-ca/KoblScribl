@@ -43,6 +43,7 @@ const sortedSeries = [...seriesMap.entries()]
       sideCount,
       summary: entries[0]?.data.seriesSummary ?? "",
       fandoms: [...new Set(entries.flatMap((entry) => entry.data.fandoms))],
+      containsNsfw: entries.some((entry) => entry.data.nsfw),
     };
   })
   .sort((a, b) => a.seriesTitle.localeCompare(b.seriesTitle));
@@ -72,10 +73,12 @@ const sortedOneShots = [...oneShots].sort((a, b) =>
           {sortedSeries.map((series) => (
             <article class="series-card">
               <h4>
-  <a href={`/works/crossovers/${encodeURIComponent(series.seriesTitle)}`}>
-    {series.seriesTitle}
-  </a>
-</h4>
+                <a href={`/works/crossovers/${encodeURIComponent(series.seriesTitle)}`}
+                    class:list={{ "nsfw-link": series.containsNsfw }}
+                    data-nsfw={series.containsNsfw ? "true" : "false"}>
+                  {series.seriesTitle}
+                </a>
+              </h4>
 
               <div class="pill-list">
                 {series.fandoms.map((fandom) => (
@@ -83,6 +86,10 @@ const sortedOneShots = [...oneShots].sort((a, b) =>
                 ))}
                 <span class="fandom-pill crossover-pill">CROSSOVER</span>
               </div>
+
+              {series.containsNsfw && (
+                <p class="nsfw-warning">Contains NSFW content!</p>
+              )}
 
               <p class="series-counts">
                 {series.totalCount} chapter{series.totalCount === 1 ? "" : "s"}
@@ -110,7 +117,11 @@ const sortedOneShots = [...oneShots].sort((a, b) =>
           {sortedOneShots.map((work) => (
             <article class="oneshot-card">
               <h4>
-                <a href={`/works/read/${work.id}`}>{work.data.title}</a>
+                <a href={`/works/read/${work.id}`}
+                class:list={{ "nsfw-link": work.data.nsfw }}
+                data-nsfw={work.data.nsfw ? "true" : "false"}>
+                  {work.data.title}
+                  </a>
               </h4>
 
               <div class="pill-list">
@@ -128,7 +139,61 @@ const sortedOneShots = [...oneShots].sort((a, b) =>
       )}
     </section>
   </section>
+
+  <div id="nsfw-modal" class="nsfw-modal hidden" aria-hidden="true">
+  <div class="nsfw-modal-content">
+    <h3>NSFW Content Warning</h3>
+    <p>
+      This work contains NSFW content. Please continue only if you are 18+ or of legal age in your region.
+    </p>
+
+    <div class="nsfw-modal-actions">
+      <button id="nsfw-cancel" type="button">Cancel</button>
+      <button id="nsfw-confirm" type="button">I am 18+</button>
+    </div>
+  </div>
+</div>
 </BaseLayout>
+
+<script>
+  let pendingHref: string | null = null;
+
+  const modal = document.getElementById("nsfw-modal");
+  const confirmButton = document.getElementById("nsfw-confirm");
+  const cancelButton = document.getElementById("nsfw-cancel");
+
+  const nsfwLinks = document.querySelectorAll<HTMLAnchorElement>("a[data-nsfw='true']");
+
+  for (const link of nsfwLinks) {
+    link.addEventListener("click", (event) => {
+      const alreadyConfirmed = sessionStorage.getItem("nsfw-confirmed") === "true";
+
+      if (alreadyConfirmed) {
+        return;
+      }
+
+      event.preventDefault();
+      pendingHref = link.href;
+
+      modal?.classList.remove("hidden");
+      modal?.setAttribute("aria-hidden", "false");
+    });
+  }
+
+  cancelButton?.addEventListener("click", () => {
+    pendingHref = null;
+    modal?.classList.add("hidden");
+    modal?.setAttribute("aria-hidden", "true");
+  });
+
+  confirmButton?.addEventListener("click", () => {
+    sessionStorage.setItem("nsfw-confirmed", "true");
+
+    if (pendingHref) {
+      window.location.href = pendingHref;
+    }
+  });
+</script>
 
 <style>
   .breadcrumb {
@@ -239,5 +304,56 @@ const sortedOneShots = [...oneShots].sort((a, b) =>
   .crossover-pill {
     border-color: #4f3d5e;
     color: #c9a7e8;
+  }
+
+  .nsfw-warning {
+    margin: 0.35rem 0 0 0;
+    font-size: 0.9rem;
+    font-style: italic;
+    color: #d9a3a3;
+  }
+
+  .nsfw-modal.hidden {
+    display: none;
+  }
+
+  .nsfw-modal {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.75);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1rem;
+    z-index: 1000;
+  }
+
+  .nsfw-modal-content {
+    max-width: 460px;
+    width: 100%;
+    background: #151515;
+    border: 1px solid #2a2a2a;
+    border-radius: 0.75rem;
+    padding: 1.25rem;
+  }
+
+  .nsfw-modal-content h3 {
+    margin-top: 0;
+  }
+
+  .nsfw-modal-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 0.75rem;
+    margin-top: 1rem;
+  }
+
+  .nsfw-modal-actions button {
+    padding: 0.6rem 0.9rem;
+    border-radius: 0.5rem;
+    border: 1px solid #3a3a3a;
+    background: #1d1d1d;
+    color: #e8e6e3;
+    cursor: pointer;
   }
 </style>

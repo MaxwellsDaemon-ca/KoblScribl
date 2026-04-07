@@ -1,6 +1,6 @@
 import { visit } from "unist-util-visit";
+import * as emoji from "node-emoji";
 
-console.log("LOADING REMARK TEXTING PLUGIN FROM:", import.meta.url);
 
 export default function remarkTexting() {
   return (tree) => {
@@ -30,6 +30,10 @@ export default function remarkTexting() {
   };
 }
 
+function parseEmojis(text) {
+  return emoji.emojify(text);
+}
+
 function parseDirectiveChildren(children, sender, colorMap) {
   const messages = [];
   let currentMessage = null;
@@ -48,9 +52,6 @@ function parseDirectiveChildren(children, sender, colorMap) {
     const headerMatch = paragraphText.match(/^@([a-zA-Z0-9_-]+)(?:\[(.*?)\])?$/);
 
 if (headerMatch) {
-  console.log("HEADER PARAGRAPH:", paragraphText);
-  console.log("HEADER MATCH speaker:", headerMatch[1]);
-  console.log("HEADER MATCH attrs:", headerMatch[2]);
 
   if (currentMessage) {
     finalizeMessage(currentMessage, sender);
@@ -60,7 +61,6 @@ if (headerMatch) {
   const speaker = normalizeSpeaker(headerMatch[1]);
   const attrs = parseInlineAttributes(headerMatch[2] || "");
 
-  console.log("PARSED ATTRS:", attrs);
 
   const isSystem = speaker === "system";
 
@@ -73,8 +73,6 @@ if (headerMatch) {
     showName: true,
     isSystem,
   };
-
-  console.log("FINAL TIME VALUE:", currentMessage.time);
 
   continue;
 }
@@ -232,7 +230,7 @@ function buildTextingHtml(messages, title) {
       const paragraphsHtml = message.paragraphs
         .map(
           (paragraph) =>
-            `<p class="texting-paragraph">${escapeHtml(paragraph)}</p>`
+            `<p class="texting-paragraph">${parseEmojis(escapeHtml(paragraph))}</p>`
         )
         .join("");
 
