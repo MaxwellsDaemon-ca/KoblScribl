@@ -1,5 +1,5 @@
 ---
-title: "TBD"
+title: "Fracture"
 category: "fanfiction"
 fandoms: ["Pokémon"]
 fandomSlug: ["pokemon"]
@@ -9,13 +9,17 @@ seriesTitle: "Redolence"
 seriesSlug: "redolence"
 seriesSummary: |
     Alexei, a salandit of habit, begins to notice the subtle ways his life is changing as new presences and old routines collide around his weekly game.
-    Story inspired and taking place in Halcyon Falls, a setting made by [Sparklefofs *Covalence* series.](https://k.ink.horse/fics/)
+
+    This story takes place in Halcyon Falls, a setting created by Irisfofs and featured in the *Covalence* series. Much of what makes this world work belongs to them. Link to their website below.
+
+    <a href="https://k.ink.horse/fics/">
+    <img src="/images/iris-tail.png" alt="Irisfofs Site Banner" /> </a>
 chapterNumber: 1
-chapterTitle: "Chapter 1"
+chapterTitle: "Fracture"
 summary: "We meet our main character, Alexei, and his nerdy group of Dungeons and Dragapults players."
-wordCount: 3302
+wordCount: 6069
 status: "draft"
-published: true
+published: false
 ---
 
 “And there before you, unaware of your presence and standing in the mire of the Moonlit Swamp, was the quarry your party has been hunting for the past week – the Hydroodra.”
@@ -166,9 +170,9 @@ Alexei chuckled as the rest of the group also made their excuses to head out, pr
 
 Having gathered up his smaller items and notes, he looked around the game store that they rented a table at – *The Hidden Ability, discover what your party can do! –* and sighed at the change of locale. He was actually really enjoying having them play at his apartment. It was cozy, he didn’t have to travel and haul around ten books – which were all bigger than him, mind you! – but noooo, just because he had sex one time over there it reeked of it and the rest of them refused to come over now. He couldn’t help that Weft had a… generous capacity. He even had it steam cleaned!
 
-Grumbling halfheartedly he looked at the stack of books beside him and the pull-behind cart below on the floor. Thankfully this shop was nearby to his apartment complex, he only had to walk 4 blocks. The game store was surprisingly nice too,  compared to the shitty area it was in. It had a little café to hang out in, had some isolated tables in the various corners so that the din of other games didn’t overflow. He wasn’t sure how it was staying afloat, but he wasn’t a business-mon.
+Grumbling halfheartedly he looked at the stack of books beside him and the pull-behind cart below on the floor. Thankfully this shop was nearby to his apartment complex, he only had to walk four blocks. The game store was surprisingly nice too,  compared to the shitty area it was in. It had a little café to hang out in, had some isolated tables in the various corners so that the din of other games didn’t overflow. He wasn’t sure how it was staying afloat, but he wasn’t a business-mon.
 
-Alexei sighed as he grabbed the top book, holding it over his head as he jumped down into the cart and set the book down, before tensing his legs to jump back up to the table. As he did so and went to grab the next book, a baritone voice called out, “Hey, need some help?”
+Alexei sighed as he grabbed the top book, holding it over his head as he jumped down into the cart and set the book down, before tensing his legs to jump back up to the table. At least he was getting his workout in, his little body only just shorter than the books. *Why couldn't I have been a normal sized Salandit?* As he did so and went to grab the next book, a baritone voice called out, “Hey, need some help?”
 
 Blinking, the salandit turned to see a blue head poking over the shelves that kept the table solitary. *A… dragonair?* Alexei thought, watching as the snake-like dragon moved towards the opening that led to the table.
 
@@ -246,7 +250,7 @@ Grumbling, he turned his attention back to text and whipped out a quick response
 
 :::texting{sender="alexei" colors="tali:dark-blue, alexei:purple"}
 
-@alexei[time=2-43 PM]
+@alexei
 
 Yeah? What's up?
 
@@ -258,7 +262,7 @@ Waiting for the buzzing to stop, he then looked over everything she had sent.
 
 :::texting{sender="alexei" colors="tali:dark-blue, alexei:purple"}
 
-@tali[time=2-43 PM]
+@tali
 
 that call i got after session was the waitress job
 
@@ -290,11 +294,11 @@ Alexei's brain blanked for a moment. Tali was leaving? But... they'd been on thi
 
 *No... no. Tali's been struggling, I should be happy for her.*
 
-Taking another deep breath, just like he'd been instructed, he started a message back. 
+Taking another deep breath, just like he'd been told when he'd been instructed how to regulate, he started a message back. 
 
 :::texting{sender="alexei" colors="tali:dark-blue, alexei:purple"}
 
-@alexei[time=2-45 PM]
+@alexei
 
 Hey, first of all, that's awesome! 
 
@@ -306,7 +310,7 @@ You know how much of a pain it was to get everyone's schedules lined up :sweat_s
 
 Do you want me to message the group chat and let them know, or do you want to?
 
-@tali[time=2-46 PM]
+@tali
 
 ill tell them!
 
@@ -338,7 +342,7 @@ But that campaign – despite only Ilan still being on his first character – j
 
 :::texting{sender="alexei" colors="tali:dark-blue, alexei:purple"}
 
-@alexei[time=2-50 PM]
+@alexei
 
 And we’re really gonna miss you.
 
@@ -358,20 +362,604 @@ Shaking his head, he put his conn-orb away after muting the D&D group chat for a
 
 ---
 
-Alexei was curled up in a ball, in the divot of a much too large beanbag chair. An old re-run of Wheel of Jirachi filled the silence, a slight hint of tv static hiding behind the competitors cheering or groaning. 
+Alexei was curled up in a ball, in the divot of a much too large beanbag chair. An old re-run of Wheel of Jirachi filled the silence, a slight hint of thaumic static hiding behind the competitors cheering or groaning. 
 
-He sighed, looking at the door, its little string hanging from the lever so he didn't have to jump up a foot to reach the handle. He knew his friends had a solid reason for not wanting to be over here. Even now, curled on the beanbag, the scent of braixen musk still clung to the fabric despite the cleaning service he had ordered. Not that he regretted that night. It had been... sooo worth it. But just like in his campaign, there were consequences. He rolled the die, and it meant having to relocate their weekly games. 
+He sighed, looking at the door, its little string hanging from the lever so he didn't have to jump up a foot to reach the handle. *I ought to have maintenance look at the footpaw pedal. They're supposed to fix things like that, right?* 
+
+He knew his friends had a solid reason for not wanting to be over here. Even now, curled on the beanbag, the scent of braixen musk still clung to the fabric despite the cleaning service he had ordered. Not that he regretted that night. It had been... sooo worth it. But just like in his campaign, there were consequences. He rolled the die, and it meant having to relocate their weekly games. 
 
 Still didn't stop him from reminiscing though. They used to gather around his gaming table – the only thing in the apartment that was actually worth anything – with Rook and King sitting on the beanbags, and the rest of them sitting on the edges of the table around the playmat. 
 
-They'd order pizza or chinese, and chow down in between scenes of their characters talking, sometimes catching each other off guard by asking a question mid-bite.
+They'd order pizza or stir-fry, and chow down in between scenes of their characters talking, sometimes catching each other off guard by asking a question mid-bite.
 
 *Ah, yeah, I should probably clean out my fridge, pretty sure there's some two-week old pizza left in there...*
 
-His musings were interrupted by a buzz from his conn-orb, which caught him off guard. The group chat definitely still had at least thirty minutes left on mute, and as he pulled it to his face, he realized who it was. 
+His musings were interrupted by a buzz from his conn-orb, which caught him off guard. The group chat definitely still had at least thirty minutes left on mute, and as he pulled it closer, he realized who it was. 
 
 ...Right. 
 
-He'd been about to text her anyway. 
+He'd told her they'd moved the session back to a game store.
 
-Figures that she'd get there first.
+:::texting{sender="alexei" colors="alexei:purple, naira:ice-blue"}
+
+@naira[time=3-24 PM]
+
+second session at the shop?
+
+:::
+
+He smiled – just a little. Things were... strained between them. But she'd reached out. *I only mentioned it once. A couple of weeks ago.*
+
+He was about to start typing back when another notification popped up and he reflexively clicked on it. 
+
+:::texting{sender="alexei" colors="alexei:purple, system:slate"}
+
+@system[time=3-26 PM]
+
+Tali has left the group "Weekly Session Chat"
+
+:::
+
+He stared at the message. 
+
+The rest of the chat might as well not have existed. 
+
+Oh. Right. 
+
+System alerts still came through, even muted.
+
+He inhaled a shaky breath, then scrolled back up to where the messages began. 
+
+:::texting{title="Weekly Session Chat" sender="alexei" colors="alexei:purple, tali:dark-blue, rook:red, tess:gold, king:green, ilan:light-purple, system:slate"}
+
+@tess[time=9-53 AM]
+
+Gonna be late. Busses suck.
+
+@alexei 
+
+All good!
+
+@king 
+
+Yeah, we'll just get something at the cafe.
+
+@tali[time=2-49 PM]
+
+hey uh  
+
+@tali  
+
+so i wanted to say this here too  
+
+@tali  
+
+i got the job!!  
+
+@rook  
+
+AYOOOO  
+
+@rook  
+
+lets gooooo  
+
+@king  
+
+Congrats.  
+
+@tess  
+
+That’s great, Tali.  
+
+@tali  
+
+yeah!!  
+
+@tali  
+
+but um  
+
+@tali  
+
+schedule is kinda rough  
+
+@tali  
+
+i dont think i can make the weekly sessions anymore :(  
+
+@rook  
+
+wait what  
+
+@rook  
+
+no shot  
+
+@tess  
+
+You said it might conflict.  
+
+@tali  
+
+yeah :(  
+
+@tali  
+
+i didnt think itd be this bad tho  
+
+@king 
+
+That sucks.
+
+@king  
+
+We’ll figure something out.  
+
+@rook  
+
+nah we can just move the session  
+
+@tess  
+
+We already barely line things up as is.  
+
+@rook  
+
+ok but like  
+
+@rook  
+
+we can try??  
+
+@tali  
+
+i dont want everyone rearranging stuff just for me  
+
+@tali  
+
+thats not fair  
+
+@king  
+
+It wouldn’t just be for you.  
+
+@tess  
+
+It would mostly be for you, yeah. 
+
+@rook  
+
+wow ok  
+
+@rook  
+
+betrayal  
+
+@tali  
+
+:sob:
+
+@ilan  
+
+You were always going to leave eventually.  
+
+@rook  
+
+????  
+
+@tess  
+
+Ilan.  
+
+@tali  
+
+WHAT  
+
+@ilan  
+
+Not like this.  
+
+@ilan  
+
+But still.  
+
+@rook  
+
+bro WHAT does that mean  
+
+@king  
+
+I think he means things change.  
+
+@ilan  
+
+Yes.  
+
+@tali  
+
+well i dont LIKE that interpretation :sob:  
+
+@rook  
+
+reject reality  
+
+@rook  
+
+embrace dnd forever  
+
+@tess  
+
+That’s not how anything works.  
+
+@tali  
+
+im still gonna hang out tho!!  
+
+@tali  
+
+im not like  
+
+@tali  
+
+gone gone  
+
+@rook  
+
+you better not be  
+
+@rook  
+
+im still making you play one shots  
+
+@tali  
+
+im down for those!!  
+
+@king  
+
+Good.  
+
+@tess  
+
+That works.  
+
+@ilan  
+
+You will still be present.  
+
+@rook  
+
+ok thats still ominous but sure  
+
+@tali  
+
+okay but yeah  
+
+@tali  
+
+im gonna step out of the weekly chat since i wont be there regularly  
+
+@tali 
+
+see you in the hangout chat
+
+@rook  
+
+wait
+
+@system[time=3-26 PM]
+
+Tali has left the group "Weekly Session Chat"  
+
+@rook 
+
+you dont gotta leave
+
+@rook  
+
+bro???  
+
+@rook  
+
+she actually did it  
+
+@tess  
+
+She said she would.  
+
+@rook  
+
+yeah but like  
+
+@rook  
+
+damn  
+
+@king  
+
+We’ll adjust. Not the first time we've had to. 
+
+:::
+
+*Yeah, things change alright. Not gone gone my scaly ass.*
+
+He took a deep breath inward. *No... she is still in the hangout chat.*
+
+He let it out in a long exhale, letting the tension go from his shoulders. 
+
+Groans erupted from his teleorb as a contestant made the wrong call and lost the jackpot. 
+
+*Okay. Okay. Our wizard is gone. That's gonna be a problem.*
+
+He frowned as he started running through his plans for the next couple of sessions, he’d need to adjust encounters, account for the loss of utility magic –
+
+He stopped. 
+
+...Right. That wasn't really the problem, was it? 
+
+Guess Naira had good timing.
+
+He pulled up the chat, her message sitting there, patiently waiting, just like she did. He sighed and started typing. 
+
+:::texting{sender="alexei" colors="alexei:purple, naira:ice-blue"}
+
+@naira[time=3-24 PM]
+
+second session at the shop?
+
+@alexei[time=3-48 PM]
+
+yeah
+
+second one there
+
+it was... fine
+
+:::
+
+He didn't put it away. She was patient. The read receipt already showed she'd seen it. 
+
+:::texting{sender="alexei" colors="alexei:purple, naira:ice-blue"}
+
+@naira 
+
+define "fine"
+
+@alexei 
+
+we lost a player
+
+@naira 
+
+recent?
+
+@alexei 
+
+just now
+
+she got a job
+
+schedule doesn't line up anymore
+
+@naira 
+
+and?
+
+@alexei 
+
+it messes with the group
+
+we don't have a wizard anymore
+
+@naira 
+
+that's not what's bothering you
+
+:::
+
+No, it wasn't. He looked up to the table, pulling himself out of the divot in the beanbag and scarmbled up to the top of the table, his conn-orb wrapped in his tail.
+
+On it was a photo frame, with a picture of the group. Himself in a wizard's hat holding a conn-orb like it was a magical focus atop King's back, with the rest of them surrounding them. His eyes glanced towards the cut-out portion of the picture before focusing back on Tali. 
+
+He stared at her, caught midair with a grin on her beak.
+
+He turned back to the conn-orb, claws hovering over the keyboard.
+
+Then –
+
+:::texting{sender="alexei" colors="alexei:purple, naira:ice-blue"}
+
+@alexei 
+
+can i come by?
+
+@naira 
+
+is this going to be a talk or a talk?
+
+@alexei 
+
+are you at the office?
+
+@naira 
+
+...
+
+@naira 
+
+yeah
+
+:::
+
+---
+
+The bus rattled away behind him as Alexei stepped onto the cracked sidewalk, the smell of riverwater lingering in the air.
+
+The building loomed just ahead – brick, darkened with age and weather, its edges worn soft where time had eaten at it. Tall, but not impressive.  Just... there. One of a dozen like it packed shoulder to shoulder along the street. 
+
+A narrow plaque hung beside the door, a list of office names stacked one over the other, some newer, some faded enough to be nearly unreadable. Half of them probably didn't exist anymore. 
+
+Alexei skipped right past the main door, heading towards the smaller door at its side for the more diminutive clients. Standard architecture before they started adding footpaw pedals for more accessibility. He nudged it open. It stuck slightly. Probably not used very often.
+
+He gave it a more firm shove, and it creaked open, the hinges screaming for oil. 
+
+Cool air met him inside – stale, conditioned, and carrying the faint scent of cleaning solution that didn't quite cover whatever had settled into the place over the years. The kind of smell that never really left. 
+
+The lobby wasn't much more than a narrow stretch of tile and a desk that hadn't been staffed in a while. A directory hung up on the wall behind it, names stacked in neat rows, some printed clean and sharp, others faded or peeling at the corners where the adhesive had given up. 
+
+A couple of the listings had been scratched out entirely.
+
+The desk itself sat too high to be useful to him. Not that it mattered – no one was there anyway. 
+
+He paused just long enough to glance over the directory, more out of habit than anything else. 
+
+There. *Naira - Licensed Cognitive Behavioral Therapist*. 
+
+His eyes lingered at her nameplate. *Maybe this* was *a mistake*.
+
+He looked down the hallway, stretching out in both directions, lit by overhead panels that hummed faintly. One flickered just enough to be noticeable if you looked at it too long. Doors lined the walls – closed, mostly. Some full-sized, some set lower into the wall, others with dual handles depending on who needed to use them. 
+
+*No, she's already expecting me. It'd be worse to flake out now.*
+
+He sighed, starting down the hall, the faint sound of his steps carrying a little too loudly against the tile. Some doors had light spilling out from underneath, voices muffled behind them. 
+
+The hallway stretched longer than it needed to. 
+
+Alexei kept his pace steady anyway, passing doors that looked just similar enough to blur together if he didn't focus. He didn't need to check most of them. He knew where he was going. 
+
+Still, his eyes flicked toward the plaques as he passed, more out of habit than anything else. 
+
+Until... there. 
+
+*Naira - Licensed CBT*
+
+Same as it had been. His steps slowed. 
+
+The door itself was unremarkable. Solid, clean, well-kept in a way the rest of the building wasn't. No peeling edges, no warped frame. Even the handle looked newer than the others he'd passed. 
+
+He gave a wry shake of his head. Of course it did. Alexei stopped just short of it, the tip of his tail curling around his conn-orb. 
+
+*You've been here before.* He told himself. 
+
+*But that was before.* A darker voice whispered back. 
+
+He lifted a claw, hesitating, before knocking. Not loud, just enough. There was a brief pause, and then a soft click. 
+
+"Come in."
+
+Four breaths in, hold four, four breaths out, hold four. *Just like she taught me.*
+
+Alexei nudged the door open and slipped inside. 
+
+The difference was immediate.
+
+The air felt... cleaner. Not just filtered – maintained. A faint, cool scent lingered, something subtle and intentional that didn't try to cover anything so much as replace it entirely. 
+
+The space wasn't large, but it was used well. 
+
+A low table sat near the center of the room, surrounded by seating of varying sizes – cushioned, supportive, arranged with careful spacing that made it clear they'd been placed, not just filled in. Nothing crowded. Nothing wasted.
+
+Shelving lined one wall, neatly ordered. Books, files, a few small objects placed with enough care to feel deliberate without drawing attention to themselves. 
+
+No clutter, no leftovers from previous clients, nothing that didn't belong. 
+
+Light filtered in from a narrow window, softened – diffused somehow so it didn't glare or cast harsh edges. Even the lighting felt... considered. 
+
+Contained. 
+
+Alexei stepped fully inside, the door closing quietly behind him. It didn't creak. Of course it didn't. 
+
+Naira was laying on the floor by the low table, her imposing stature still preserved despite not standing up at all. The glaceon was without a doubt considered extra large for her species – standing four and a half feet at her withers. She raised a paw towards the small seat, a gentle smile on her muzzle. "Glad you made it."
+
+He let out a sigh of relief. She wasn't mad. 
+
+He nodded, moving over to the seat she indicated – the one he'd sat in many times before – and hopped up onto it, sitting down but leaning forward, his front claws pressing down between his hindlegs. 
+
+They sat there for a moment, watching each other. He still felt that tension between them, despite her amiable greeting. The silence stretched on, until Alexei started shifting in place. 
+
+The glaceon sighed softly, her head tilted down to watch him. "What happened?"
+
+And wasn't that a loaded question. He shifted more, knowing that Naira had a way of cutting through to the source. So why not start there? 
+
+"Tali left the group." It hurt to say out loud. It still just... raw. 
+
+Naira let him stew in it for a moment. She was good at that. Letting him process. 
+
+"Did she?"
+
+He blinked. He had the message saying she did. But... did she? Obviously she wouldn't be coming to the weekly sessions, but she has promised to still hang out. "To a degree." He amended, nodding. 
+
+She crossed her forepaws, putting her head down to get closer to his level. "What part of it bothers you?"
+
+*I should have planned for it.*
+
+*I should have seen it coming.*
+
+*I thought I was doing good.*
+
+"It... throws things off," he said, "The party–" he paused, "It just... worked."
+
+"You're using the group as an excuse again." Her words were calm, calculated – and they cut clean through it.
+
+"Yeah..." he didn't try to argue.
+
+She waited. She was good at that.
+
+"Two years," Alexei started, falling back into the chair and stretching out on his back. "It feels like two years just... didn't matter. All the support everyone gave me with... *her*... Why couldn't Tali stay? She didn't even want us to try to rearrange the schedule."
+
+She watched as he laid back, letting his composure slip. She pounced. "So what makes you think that she was supposed to stay?" 
+
+He froze. "Because it was working," he said stiffly. "I made sure it was working." 
+
+Four in, hold, four out, hold. "... that's kind of the point."
+
+She noted his breathing, a faint smile touching her muzzle. She let it sit for a moment, then cocked her head in curiosity. "So if something works, no one is allowed to leave?"
+
+"No–" he started, sitting up violently. His tail curled into his lap, and his claws found it, toying with it mindlessly. "That's not what I'm saying."
+
+He shifted, his free claw supporting him, digging into the cushion.
+
+"I'm just saying you don't... leave something that's working unless something's wrong."
+
+Naira nodded slightly, as if it was expected. She stretched forward, letting out a quiet yawn as she said, "And you assume that something is you."
+
+He didn't answer immediately, watching her stretch, his eyes trailing the curve of her back.
+
+"If it wasn't..." he said quietly, "then why would she leave?"
+
+The glaceon padded over to him, putting her paw on his head softly. "You're still doing it, Alexei." As much as he enjoyed the contact, he shifted from underneath her paw that was half-again as big as him. "You're turning someone else's decision into your responsibility."
+
+He opened his mouth, then shut it. "I–" He shook his head. They had already been through this song and dance, just in a different form. Back with... Zylin. 
+
+"Alexei." Naira's voice cut through his thoughts. "You can't keep coming to me like this." 
+
+He flinched slightly.
+
+"That's not–" he started, then stopped, head lowering. 
+
+"I didn't come here for... that. I mean–" he exhaled, shifting in place. "That's why I asked if you were here. I didn't want to give you the wrong idea." 
+
+"I just..." his claws pressed into the cushion again. "I needed to talk to someone  who already gets it."
+
+She sat down, looking down at him with a sad smile. "We've had sex, Alexei." She didn't raise her voice, didn't soften it. "I can't be your therapist anymore. We crossed that line." She sighed. "Even if we stopped, it wouldn't change that." 
+
+She took a calming breath herself, eyes squinting down at him. "And you don't get to pretend that it doesn't change anything just because it's convenient."
+
+He went still, looking up at her looming frame. "... I know." His gaze dropped, fiddling with his tail absently. "I wasn't asking you to–" he stopped, then exhaled. "I just needed somewhere that already made sense."
+
+She studied him for a moment longer, then exhaled quietly.
+
+"But as your friend," she said, more gently now, "you can talk to me."
+
+She paused, holding up her paw.
+
+"Just not here." 
+
+He didn't answer right away. His claws loosened slightly against the cushion, tail settling back behind him. 
+
+"...okay." he said, finally.
+
+The room was quiet again, the soft hum of the lights settling back in around them.
+
+---

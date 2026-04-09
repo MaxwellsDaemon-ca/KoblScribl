@@ -106,6 +106,11 @@
   color: #ffffff;
 }
 
+.texting-message.color-ice-blue .texting-bubble {
+  background: #e0f2fe;
+  color: #0c4a6e;
+}
+
 .texting-message.color-green .texting-bubble {
   background: #16a34a;
   color: #ffffff;
@@ -125,6 +130,11 @@
 .texting-message.color-purple .texting-bubble {
   background: #7c3aed;
   color: #ffffff;
+}
+
+.texting-message.color-light-purple .texting-bubble {
+  background: #c4b5fd;
+  color: #7c3aed;
 }
 
 .texting-message.color-red .texting-bubble {
@@ -161,6 +171,11 @@
   color: #7f9dc0;
 }
 
+.texting-message.color-ice-blue .texting-name,
+.texting-message.color-ice-blue .texting-time {
+  color: #0c4a6e;
+}
+
 .texting-message.color-green .texting-name,
 .texting-message.color-green .texting-time {
   color: #bbf7d0;
@@ -181,6 +196,11 @@
 .texting-message.color-purple .texting-name,
 .texting-message.color-purple .texting-time {
   color: #ddd6fe;
+}
+
+.texting-message.color-light-purple .texting-name,
+.texting-message.color-light-purple .texting-time {
+  color: #c4b5fd;
 }
 
 .texting-message.color-red .texting-name,
@@ -235,6 +255,10 @@
   color: #7f9dc0;
 }
 
+.texting-system-message.color-ice-blue {
+  color: #0c4a6e;
+} 
+
 .texting-system-message.color-gray,
 .texting-system-message.color-grey {
   color: #9ca3af;
@@ -254,6 +278,10 @@
 
 .texting-system-message.color-purple {
   color: #c4b5fd;
+}
+
+.texting-system-message.color-light-purple {
+  color: #d8b4fe;
 }
 
 .texting-system-message.color-red {
