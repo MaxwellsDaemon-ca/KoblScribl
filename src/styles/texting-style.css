@@ -122,6 +122,11 @@
   color: #111827;
 }
 
+.texting-message.color-yellow .texting-bubble {
+  background: #facc15;
+  color: #111827;
+}
+
 .texting-message.color-gold .texting-bubble {
   background: #d97706;
   color: #ffffff;
@@ -186,6 +191,11 @@
 .texting-message.color-grey .texting-name,
 .texting-message.color-grey .texting-time {
   color: #4b5563;
+}
+
+.texting-message.color-yellow .texting-name,
+.texting-message.color-yellow .texting-time {
+  color: #fbbf24;
 }
 
 .texting-message.color-gold .texting-name,
@@ -262,6 +272,10 @@
 .texting-system-message.color-gray,
 .texting-system-message.color-grey {
   color: #9ca3af;
+}
+
+.texting-system-message.color-yellow {
+  color: #fbbf24;
 }
 
 .texting-system-message.color-gold {
