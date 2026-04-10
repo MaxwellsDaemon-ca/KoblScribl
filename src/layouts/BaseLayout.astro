@@ -1,19 +1,29 @@
 ---
 interface Props {
   title: string;
+  description?: string;
 }
 
-const { title } = Astro.props;
+const { title,
+  description = "Kobold keep many scribls. Some shiny, some messy, some bite back."
+ } = Astro.props;
 ---
 
 <!doctype html>
 <html lang="en">
   <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width" />
-    <meta name="description" content="A personal story archive." />
-    <title>{title}</title>
-  </head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width" />
+  <meta name="description" content={description} />
+
+  <title>{title} | KoblScribl</title>
+
+  <meta property="og:title" content={title} />
+  <meta property="og:description" content={description} />
+  <meta property="og:url" content={Astro.url.href} />
+  <meta property="og:site_name" content="KoblScribl" />
+  <meta property="og:type" content="website" />
+</head>
   <body>
     <header class="site-header">
   <div class="site-header-inner">

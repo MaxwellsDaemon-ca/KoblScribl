@@ -61,7 +61,7 @@ const allFandomSlugs = [...new Set(seriesWorks.flatMap((work) => work.data.fando
 const seriesSummary = seriesWorks[0]?.data.seriesSummary ?? "";
 ---
 
-<BaseLayout title={`${seriesTitle} - Crossovers`}>
+<BaseLayout title={`${seriesTitle}`} description={seriesSummary}>
   <section class="series-page">
     <p class="breadcrumb">
       <a href="/works">Works</a> /

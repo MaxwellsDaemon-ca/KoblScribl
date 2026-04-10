@@ -23,6 +23,12 @@ export async function getStaticPaths() {
 const { work } = Astro.props as Props;
 const { Content } = await render(work);
 
+const baseSummary = work.data.summary;
+
+const description = work.data.contentWarnings
+  ? `${baseSummary}\nCW: ${work.data.contentWarnings}`
+  : baseSummary;
+
 const allWorks: CollectionEntry<"works">[] = await getCollection("works");
 
 /**
@@ -62,7 +68,10 @@ const nextChapter =
     : null;
 ---
 
-<BaseLayout title={work.data.chapterTitle ?? work.data.title}>
+<BaseLayout
+  title={work.data.chapterTitle ?? work.data.title}
+  description={description}
+/>
   <p class="breadcrumb">
     <a href="/works">Scribls!</a>
 

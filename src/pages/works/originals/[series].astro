@@ -58,7 +58,7 @@ const sideStories = seriesWorks.filter((work) => work.data.storyGroup === "side"
 const seriesSummary = seriesWorks[0]?.data.seriesSummary ?? "";
 ---
 
-<BaseLayout title={`${seriesTitle} - Original Works`}>
+<BaseLayout title={`${seriesTitle}`}  description={seriesSummary}>
   <section class="series-page">
     <p class="breadcrumb">
       <a href="/works">Scribls!</a> /
