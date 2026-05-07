@@ -1,10 +1,18 @@
 ---
+/**
+ * Dynamic fanfiction series index route.
+ *
+ * This page generates `/works/[fandom]/[series]` routes for published fanfiction series.
+ * It lists main chapters and side stories separately, displays the series summary, and
+ * collects series-wide tags from the chapter metadata.
+ */
 import BaseLayout from "../../../layouts/BaseLayout.astro";
+import TagList from "../../../components/TagList.astro";
+import "../../../styles/shared-directory.css";
 import { getCollection } from "astro:content";
 import type { CollectionEntry } from "astro:content";
+import { chapterDisplayTitle, collectSeriesTags, sortByChapterNumber } from "../../../lib/workUtils";
 import { marked } from "marked";
-
-const md = (text: string) => marked.parse(text);
 
 interface Props {
   fandom: string;
@@ -13,25 +21,33 @@ interface Props {
   seriesTitle: string;
 }
 
+/**
+ * Renders markdown-enabled series summaries from frontmatter.
+ *
+ * This allows light formatting such as italics or inline emphasis without requiring
+ * a separate content file for the series description.
+ */
+const md = (text: string) => marked.parse(text);
+
 export async function getStaticPaths() {
   const works: CollectionEntry<"works">[] = await getCollection("works");
-
   const seen = new Set<string>();
-  const paths: {
-    fandom: string;
-    fandomSlug: string;
-    series: string;
-    seriesTitle: string;
-  }[] = [];
+  const paths: Props[] = [];
 
+  /**
+   * Generate each fandom-series route once, even when multiple chapters share it.
+   *
+   * A single series may have many chapter entries, so the `seen` key prevents duplicate
+   * static paths for the same fandom slug and series slug combination.
+   */
   for (const work of works) {
     if (!work.data.published || work.data.category !== "fanfiction") continue;
     if (work.data.workType !== "series") continue;
     if (!work.data.seriesTitle || !work.data.seriesSlug) continue;
 
-    for (let i = 0; i < work.data.fandoms.length; i++) {
-      const fandom = work.data.fandoms[i];
-      const fandomSlug = work.data.fandomSlug[i];
+    for (let index = 0; index < work.data.fandoms.length; index++) {
+      const fandom = work.data.fandoms[index];
+      const fandomSlug = work.data.fandomSlug[index];
       const key = `${fandomSlug}::${work.data.seriesSlug}`;
 
       if (seen.has(key)) continue;
@@ -47,23 +63,20 @@ export async function getStaticPaths() {
   }
 
   return paths.map((entry) => ({
-    params: {
-      fandom: entry.fandomSlug,
-      series: entry.series,
-    },
-    props: {
-      fandom: entry.fandom,
-      fandomSlug: entry.fandomSlug,
-      series: entry.series,
-      seriesTitle: entry.seriesTitle,
-    },
+    params: { fandom: entry.fandomSlug, series: entry.series },
+    props: entry,
   }));
 }
 
 const { fandom, fandomSlug, series, seriesTitle } = Astro.props as Props;
-
 const works: CollectionEntry<"works">[] = await getCollection("works");
 
+/**
+ * Pull the published chapters that belong to this fandom-specific series route.
+ *
+ * The fandom check matters because the same series slug could theoretically appear
+ * under a different fandom or category. The final sort controls reading order.
+ */
 const seriesWorks = works
   .filter(
     (work) =>
@@ -73,14 +86,27 @@ const seriesWorks = works
       work.data.seriesSlug === series &&
       work.data.fandoms.includes(fandom)
   )
-  .sort((a, b) => (a.data.chapterNumber ?? 0) - (b.data.chapterNumber ?? 0));
+  .sort(sortByChapterNumber);
 
+/**
+ * Main chapters and side stories are displayed as separate sections.
+ *
+ * Main chapters use the normalized chapter display helper so chapter zero appears
+ * as `Prologue` instead of `Chapter 0`.
+ */
 const mainChapters = seriesWorks.filter((work) => work.data.storyGroup === "main");
 const sideStories = seriesWorks.filter((work) => work.data.storyGroup === "side");
+
 const seriesSummary = seriesWorks[0]?.data.seriesSummary ?? "";
+
+/**
+ * Series tags are collected from the series entries and deduplicated by tag type/slug.
+ * This keeps the index page representative without repeating tags from every chapter.
+ */
+const seriesTags = collectSeriesTags(seriesWorks);
 ---
 
-<BaseLayout title={`${seriesTitle}`}  description={seriesSummary}>
+<BaseLayout title={seriesTitle} description={seriesSummary}>
   <section class="series-page">
     <p class="breadcrumb">
       <a href="/works">Scribls!</a> /
@@ -90,57 +116,71 @@ const seriesSummary = seriesWorks[0]?.data.seriesSummary ?? "";
 
     <header class="series-header">
       <h2>{seriesTitle}</h2>
-      {seriesSummary && (
-        <div
-          class="series-summary"
-          set:html={md(seriesSummary)}
-        />
-      )}
+
+      {seriesSummary && <div class="series-summary" set:html={md(seriesSummary)} />}
+
+      <TagList tags={seriesTags} grouped={true} />
     </header>
 
-    <section class="series-section">
-      <h3>Main Story</h3>
+    <!-- Main story chapter list, ordered by chapterNumber. -->
+    <section class="series-section" aria-labelledby="main-story-heading">
+      <h3 id="main-story-heading">Main Story</h3>
 
       {mainChapters.length === 0 ? (
         <p>No main chapters yet.</p>
       ) : (
         <div class="chapter-list">
           {mainChapters.map((work) => (
-            <article class="chapter-card">
-              <h4>
-                <a href={`/works/read/${work.id}`}>
-                  Chapter {work.data.chapterNumber}: {work.data.chapterTitle ?? work.data.title}
-                </a>
-              </h4>
+            <article class="chapter-card full-card-link">
+              <!--
+                Stretched link makes the full chapter card clickable while keeping the
+                visible title, summary, and metadata in normal semantic elements.
+              -->
+              <a
+                class="card-stretched-link"
+                href={`/works/read/${work.id}`}
+                aria-label={`Open ${chapterDisplayTitle(work)}`}
+              ></a>
 
-              <p class="chapter-summary">{work.data.summary}</p>
-              <p class="chapter-meta">Word Count: {work.data.wordCount}</p>
+              <div class="card-content">
+                <h4>{chapterDisplayTitle(work)}</h4>
+                <p class="chapter-summary">{work.data.summary}</p>
+                <p class="chapter-meta">Word Count: {work.data.wordCount}</p>
+              </div>
             </article>
           ))}
         </div>
       )}
     </section>
 
-    <section class="series-section">
-      <h3>Side Stories</h3>
+    <!-- Side stories are shown separately because they may not belong to the main reading order. -->
+    <section class="series-section" aria-labelledby="side-stories-heading">
+      <h3 id="side-stories-heading">Side Stories</h3>
 
       {sideStories.length === 0 ? (
         <p>No side stories.</p>
       ) : (
         <div class="chapter-list">
           {sideStories.map((work) => (
-            <article class="chapter-card">
-              <h4>
-                <a href={`/works/read/${work.id}`}>
-                  {work.data.title}
-                </a>
-              </h4>
+            <article class="chapter-card full-card-link">
+              <a
+                class="card-stretched-link"
+                href={`/works/read/${work.id}`}
+                aria-label={`Open ${work.data.title}`}
+              ></a>
 
-              <p class="chapter-summary">{work.data.summary}</p>
-              <p class="chapter-meta">Word Count: {work.data.wordCount}</p>
-              {work.data.contentWarnings && (
-                <p class="chapter-warning">CW: {work.data.contentWarnings}</p>
-              )}
+              <div class="card-content">
+                <h4>{work.data.title}</h4>
+                <p class="chapter-summary">{work.data.summary}</p>
+                <p class="chapter-meta">Word Count: {work.data.wordCount}</p>
+
+                <!-- Side stories can carry their own tags and warnings apart from the main series. -->
+                <TagList tags={work.data.tags ?? []} grouped={false} />
+
+                {work.data.contentWarnings && (
+                  <p class="chapter-warning">CW: {work.data.contentWarnings}</p>
+                )}
+              </div>
             </article>
           ))}
         </div>
@@ -148,89 +188,3 @@ const seriesSummary = seriesWorks[0]?.data.seriesSummary ?? "";
     </section>
   </section>
 </BaseLayout>
-
-<style>
-  .breadcrumb {
-    margin: 0 0 1rem 0;
-    font-size: 0.95rem;
-    opacity: 0.8;
-  }
-
-  .breadcrumb a {
-    text-decoration: none;
-  }
-
-  .series-page {
-    display: flex;
-    flex-direction: column;
-    gap: 2rem;
-  }
-
-  .series-header h2 {
-    margin-bottom: 0.5rem;
-  }
-
-  .series-summary p {
-    margin: 0 0 0.75rem 0;
-  }
-
-  .series-summary p:last-child {
-    margin-bottom: 0;
-  }
-
-  .series-section {
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-  }
-
-  .series-section h3 {
-    margin-bottom: 0;
-  }
-
-  .chapter-list {
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-  }
-
-  .chapter-card {
-    border: 1px solid #2a2a2a;
-    background: #151515;
-    border-radius: 0.75rem;
-    padding: 1rem;
-  }
-
-  .chapter-card h4 {
-    margin: 0 0 0.5rem 0;
-    font-size: 1.1rem;
-  }
-
-  .chapter-card h4 a {
-    text-decoration: none;
-  }
-
-  .chapter-summary {
-    margin: 0 0 0.75rem 0;
-    opacity: 0.95;
-  }
-
-  .chapter-meta {
-    margin: 0;
-    color: #cfc7bb;
-  }
-
-  .chapter-warning {
-    margin-top: 0.75rem;
-    font-style: italic;
-  }
-
-  .authors-note img {
-    display: inline-block;
-    vertical-align: middle;
-    margin-left: 0.5rem;
-    height: 31px;
-    position: relative;
-    top: -1px; 
-  }
-</style>

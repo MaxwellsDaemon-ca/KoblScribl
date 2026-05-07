@@ -1,34 +1,16 @@
 import { defineCollection } from "astro:content";
 import { glob } from "astro/loaders";
-import { z } from "astro/zod";
+import { workSchema } from "./content/schemas/workSchema";
 
+/**
+ * Content collection registry for KoblScribl.
+ *
+ * All story Markdown files live under src/content/works and are validated by
+ * the shared work schema before Astro exposes them to pages and components.
+ */
 const works = defineCollection({
   loader: glob({ base: "./src/content/works", pattern: "**/*.md" }),
-  schema: z.object({
-    title: z.string(),
-
-    category: z.enum(["fanfiction", "crossover", "original"]),
-    fandoms: z.array(z.string()),
-    fandomSlug: z.array(z.string()),
-
-    workType: z.enum(["series", "oneshot"]),
-    storyGroup: z.enum(["main", "side"]).optional(),
-
-    seriesTitle: z.string().optional(),
-    seriesSlug: z.string().optional(),
-    seriesSummary: z.string().optional(),
-    chapterNumber: z.number().optional(),
-    chapterTitle: z.string().optional(),
-
-    summary: z.string(),
-    wordCount: z.number(),
-    contentWarnings: z.string().optional(),
-    authorsNote: z.string().optional(),
-
-    status: z.enum(["draft", "published", "complete", "hiatus"]).default("published"),
-    published: z.boolean().default(true),
-    nsfw: z.boolean().default(false),
-  }),
+  schema: workSchema,
 });
 
 export const collections = {

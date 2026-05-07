@@ -1,0 +1,91 @@
+---
+import type { WorkTag } from "../content/schemas/workSchema";
+import "../styles/tag-pills.css";
+
+interface Props {
+  tags?: WorkTag[];
+  grouped?: boolean;
+}
+
+type TagGroup = {
+  type: WorkTag["type"];
+  label: string;
+  tags: WorkTag[];
+};
+
+const { tags = [], grouped = true } = Astro.props as Props;
+
+/** Human-readable headings for grouped tag output. */
+const tagTypeLabels: Record<WorkTag["type"], string> = {
+  species: "Species",
+  genre: "Genre",
+  relationship: "Relationships",
+  character: "Characters",
+  setting: "Setting",
+  theme: "Themes",
+  trope: "Tropes",
+  content: "Content",
+  format: "Format",
+  mood: "Mood",
+  rating: "Rating",
+  general: "General",
+};
+
+/** Display order keeps high-signal story tags above warnings and general metadata. */
+const tagTypeOrder: WorkTag["type"][] = [
+  "species",
+  "character",
+  "relationship",
+  "genre",
+  "theme",
+  "trope",
+  "mood",
+  "setting",
+  "format",
+  "content",
+  "rating",
+  "general",
+];
+
+const groupedTags: TagGroup[] = tagTypeOrder
+  .map((type): TagGroup => ({
+    type,
+    label: tagTypeLabels[type],
+    tags: tags.filter((tag) => tag.type === type),
+  }))
+  .filter((group) => group.tags.length > 0);
+---
+
+{tags.length > 0 && (
+  <section class="tag-section" aria-label="Story tags">
+    {grouped ? (
+      <div class="tag-groups">
+        {groupedTags.map((group) => (
+          <div class="tag-group" data-tag-type={group.type}>
+            <h5>{group.label}</h5>
+
+            <ul class="tag-list">
+              {group.tags.map((tag) => (
+                <li>
+                  <span class={`tag-pill tag-${tag.type}`} data-tag-type={tag.type}>
+                    {tag.label}
+                  </span>
+                </li>
+              ))}
+            </ul>
+          </div>
+        ))}
+      </div>
+    ) : (
+      <ul class="tag-list">
+        {tags.map((tag) => (
+          <li>
+            <span class={`tag-pill tag-${tag.type}`} data-tag-type={tag.type}>
+              {tag.label}
+            </span>
+          </li>
+        ))}
+      </ul>
+    )}
+  </section>
+)}

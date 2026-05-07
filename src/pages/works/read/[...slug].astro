@@ -1,9 +1,18 @@
 ---
+/**
+ * Dynamic work reading route.
+ *
+ * This page generates `/works/read/[...slug]` routes for every published work in the
+ * content collection. It renders the story body, chapter metadata, breadcrumbs, optional
+ * author notes, and previous/next navigation for main-series chapters.
+ */
 import BaseLayout from "../../../layouts/BaseLayout.astro";
+import "../../../styles/shared-directory.css";
+import "../../../styles/texting-style.css";
+import "../../../styles/parsel-style.css";
 import { getCollection, render } from "astro:content";
 import type { CollectionEntry } from "astro:content";
-import '../../../styles/texting-style.css';
-import '../../../styles/parsel-style.css';
+import { chapterDisplayTitle, getMainSeriesChapters } from "../../../lib/workUtils";
 
 interface Props {
   work: CollectionEntry<"works">;
@@ -12,6 +21,12 @@ interface Props {
 export async function getStaticPaths() {
   const works: CollectionEntry<"works">[] = await getCollection("works");
 
+  /**
+   * Generate one reading page per published work.
+   *
+   * Drafts and unpublished works remain available in the content collection, but they
+   * are intentionally excluded from static route generation.
+   */
   return works
     .filter((work) => work.data.published)
     .map((work) => ({
@@ -21,66 +36,77 @@ export async function getStaticPaths() {
 }
 
 const { work } = Astro.props as Props;
+
+/**
+ * Render the Markdown/MDX body for the current work.
+ *
+ * This allows Astro content plugins, custom remark directives, and imported styles
+ * to transform story content before it is displayed.
+ */
 const { Content } = await render(work);
-
-const baseSummary = work.data.summary;
-
-const description = work.data.contentWarnings
-  ? `${baseSummary}\nCW: ${work.data.contentWarnings}`
-  : baseSummary;
 
 const allWorks: CollectionEntry<"works">[] = await getCollection("works");
 
 /**
- * Builds the ordered list of main-story chapters for the current series.
- * One-shots and side stories are excluded from prev/next navigation.
+ * Page description used for standard metadata and social previews.
+ *
+ * Content warnings are included when present so shared links retain important reader
+ * context without requiring someone to open the page first.
  */
-const seriesChapters =
-  work.data.workType === "series" && work.data.seriesTitle
-    ? allWorks
-        .filter(
-          (entry) =>
-            entry.data.published &&
-            entry.data.workType === "series" &&
-            entry.data.seriesTitle === work.data.seriesTitle &&
-            entry.data.storyGroup === "main" &&
-            entry.data.fandoms.some((fandom) => work.data.fandoms.includes(fandom))
-        )
-        .sort(
-          (a, b) => (a.data.chapterNumber ?? 0) - (b.data.chapterNumber ?? 0)
-        )
-    : [];
+const description = work.data.contentWarnings
+  ? `${work.data.summary}\nCW: ${work.data.contentWarnings}`
+  : work.data.summary;
 
 /**
- * Finds the current chapter index within the ordered main-story chapter list.
+ * Build previous/next navigation for the current work.
+ *
+ * Navigation is limited to main-series chapters. One-shots and side stories should not
+ * be inserted into the primary reading order.
  */
-const currentChapterIndex = seriesChapters.findIndex(
-  (entry) => entry.id === work.id
-);
+const seriesChapters = getMainSeriesChapters(allWorks, work);
+const currentChapterIndex = seriesChapters.findIndex((entry) => entry.id === work.id);
 
-const previousChapter =
-  currentChapterIndex > 0 ? seriesChapters[currentChapterIndex - 1] : null;
+const previousChapter = currentChapterIndex > 0 ? seriesChapters[currentChapterIndex - 1] : null;
 
 const nextChapter =
-  currentChapterIndex >= 0 &&
-  currentChapterIndex < seriesChapters.length - 1
+  currentChapterIndex >= 0 && currentChapterIndex < seriesChapters.length - 1
     ? seriesChapters[currentChapterIndex + 1]
     : null;
+
+/**
+ * Resolve the correct series index link for the current work category.
+ *
+ * Fanfiction routes are fandom-scoped, while crossover and original series use their
+ * dedicated category folders.
+ */
+const seriesIndexHref = (() => {
+  if (!work.data.seriesTitle || !work.data.seriesSlug) return "";
+
+  if (work.data.category === "fanfiction") {
+    return `/works/${work.data.fandomSlug[0]}/${work.data.seriesSlug}`;
+  }
+
+  if (work.data.category === "crossover") {
+    return `/works/crossovers/${work.data.seriesSlug}`;
+  }
+
+  return `/works/originals/${work.data.seriesSlug}`;
+})();
 ---
 
 <BaseLayout
   title={work.data.chapterTitle ?? work.data.title}
-  description={description}>
-
-  <p class="breadcrumb">
+  description={description}
+  pageClass="chapter-page"
+>
+  <!-- Breadcrumbs adapt to the work category so readers can navigate back to the correct index. -->
+  <p id="top" class="breadcrumb">
     <a href="/works">Scribls!</a>
 
     {work.data.category === "fanfiction" && work.data.fandoms[0] && (
       <>
         {" / "}
-        <a href={`/works/${work.data.fandomSlug[0]}`}>
-          {work.data.fandoms[0]}
-        </a>
+        <a href={`/works/${work.data.fandomSlug[0]}`}>{work.data.fandoms[0]}</a>
 
         {work.data.seriesTitle && work.data.seriesSlug && (
           <>
@@ -101,9 +127,7 @@ const nextChapter =
         {work.data.seriesTitle && work.data.seriesSlug && (
           <>
             {" / "}
-            <a href={`/works/crossovers/${work.data.seriesSlug}`}>
-              {work.data.seriesTitle}
-            </a>
+            <a href={`/works/crossovers/${work.data.seriesSlug}`}>{work.data.seriesTitle}</a>
           </>
         )}
       </>
@@ -117,9 +141,7 @@ const nextChapter =
         {work.data.seriesTitle && work.data.seriesSlug && (
           <>
             {" / "}
-            <a href={`/works/originals/${work.data.seriesSlug}`}>
-              {work.data.seriesTitle}
-            </a>
+            <a href={`/works/originals/${work.data.seriesSlug}`}>{work.data.seriesTitle}</a>
           </>
         )}
       </>
@@ -130,19 +152,19 @@ const nextChapter =
   </p>
 
   <article class="chapter">
+    <!-- Chapter metadata shown before the rendered story body. -->
     <header class="chapter-header">
-      {work.data.seriesTitle && (
-        <p class="series-title">{work.data.seriesTitle}</p>
-      )}
+      {work.data.seriesTitle && <p class="series-title">{work.data.seriesTitle}</p>}
 
       <h2 class="chapter-title">
-        {work.data.workType === "series" && work.data.chapterNumber
-          ? `Chapter ${work.data.chapterNumber}: ${work.data.chapterTitle ?? work.data.title}`
+        {work.data.workType === "series" && work.data.chapterNumber !== undefined
+          ? chapterDisplayTitle(work)
           : work.data.title}
       </h2>
 
+      <!-- Fandom/category pills provide quick archive context for the current work. -->
       <div class="fandom-list">
-        {work.data.fandoms.map((fandom, index) => (
+        {work.data.fandoms.map((fandom: string, index: number) => (
           <a class="fandom-pill" href={`/works/${work.data.fandomSlug[index]}`}>
             {fandom.toUpperCase()}
           </a>
@@ -154,7 +176,6 @@ const nextChapter =
       </div>
 
       <p class="chapter-summary">{work.data.summary}</p>
-
       <p class="word-count">Word Count: {work.data.wordCount}</p>
 
       {work.data.contentWarnings && (
@@ -162,76 +183,125 @@ const nextChapter =
       )}
 
       {work.data.authorsNote && (
-  <div class="authors-note">
-    {work.data.authorsNote.split("\n\n").map((para) => (
-      <p>{para}</p>
-    ))}
-  </div>
-)}
-
-      {work.data.seriesTitle && work.data.seriesSlug && work.data.category === "fanfiction" && (
-        <div class="series-index-link">
-          <a href={`/works/${work.data.fandomSlug[0]}/${work.data.seriesSlug}`}>
-            {work.data.seriesTitle}: Chapter Index
-          </a>
+        <div class="authors-note">
+          {/*
+            Author notes are stored as frontmatter text and split on blank lines so the
+            rendered output preserves paragraph-style spacing.
+          */}
+          {work.data.authorsNote.split("\n\n").map((paragraph: string) => (
+            <p>{paragraph}</p>
+          ))}
         </div>
       )}
 
-      {work.data.seriesTitle && work.data.seriesSlug && work.data.category === "crossover" && (
+      {seriesIndexHref && work.data.seriesTitle && (
         <div class="series-index-link">
-          <a href={`/works/crossovers/${work.data.seriesSlug}`}>
-            {work.data.seriesTitle}: Chapter Index
-          </a>
-        </div>
-      )}
-
-      {work.data.seriesTitle && work.data.seriesSlug && work.data.category === "original" && (
-        <div class="series-index-link">
-          <a href={`/works/originals/${work.data.seriesSlug}`}>
-            {work.data.seriesTitle}: Chapter Index
-          </a>
+          <a href={seriesIndexHref}>{work.data.seriesTitle}: Chapter Index</a>
         </div>
       )}
     </header>
 
     <hr />
 
+    <!-- Rendered story content from the Astro content collection. -->
     <Content />
 
-    {(previousChapter || nextChapter) && (
-      <>
-        <hr />
+    <hr />
 
-        <nav aria-label="Chapter navigation">
-          <div class="chapter-nav">
-            <div>
-              {previousChapter && (
-                <a href={`/works/read/${previousChapter.id}`}>
-                  ← Previous: {previousChapter.data.chapterTitle ?? previousChapter.data.title}
-                </a>
-              )}
-            </div>
+    <nav aria-label="Chapter navigation">
+      <div class="chapter-nav">
+        <div class="chapter-nav-previous">
+          {previousChapter && (
+            <a href={`/works/read/${previousChapter.id}`}>
+              ← Previous: {chapterDisplayTitle(previousChapter)}
+            </a>
+          )}
+        </div>
 
-            <div class="chapter-nav-next">
-              {nextChapter && (
-                <a href={`/works/read/${nextChapter.id}`}>
-                  Next: {nextChapter.data.chapterTitle ?? nextChapter.data.title} →
-                </a>
-              )}
-            </div>
-          </div>
-        </nav>
-      </>
-    )}
+        <div class="chapter-nav-top">
+          <button id="back-to-top" type="button">Back to Top</button>
+        </div>
+
+        <div class="chapter-nav-next">
+          {nextChapter && (
+            <a href={`/works/read/${nextChapter.id}`}>
+              Next: {chapterDisplayTitle(nextChapter)} →
+            </a>
+          )}
+        </div>
+      </div>
+    </nav>
   </article>
 </BaseLayout>
 
+<script is:inline>
+  /*
+    Custom back-to-top scroll behavior.
+
+    Native smooth scrolling can feel too fast or inconsistent between browsers, so this
+    uses requestAnimationFrame for a controlled, readable return to the top of the page.
+  */
+  (() => {
+    const button = document.getElementById("back-to-top");
+
+    if (!button) return;
+
+    const scrollToTop = () => {
+      const startY = window.scrollY || window.pageYOffset;
+      const duration = 1000;
+      const startTime = performance.now();
+
+      const easeInOutCubic = (progress) =>
+        progress < 0.5
+          ? 4 * progress * progress * progress
+          : 1 - Math.pow(-2 * progress + 2, 3) / 2;
+
+      const step = (currentTime) => {
+        const elapsed = currentTime - startTime;
+        const progress = Math.min(elapsed / duration, 1);
+        const easedProgress = easeInOutCubic(progress);
+
+        window.scrollTo(0, startY * (1 - easedProgress));
+
+        if (progress < 1) {
+          window.requestAnimationFrame(step);
+        }
+      };
+
+      window.requestAnimationFrame(step);
+    };
+
+    button.addEventListener("click", scrollToTop);
+  })();
+</script>
+
 <style>
+  /*
+    Chapter reading page styles.
+
+    The surrounding site chrome, typography defaults, breadcrumb styles, fandom pills,
+    and shared card/list styles are handled by BaseLayout and shared-directory.css.
+    These rules focus on the reading container and chapter-specific metadata.
+  */
+
   .chapter {
-    font-size: 1.1rem;
     max-width: 70ch;
     margin: 0 auto;
+    padding: clamp(1.25rem, 3vw, 2.25rem);
+    border: 1px solid rgba(212, 178, 106, 0.2);
+    border-radius: 1rem;
+    background: rgba(12, 12, 12, 0.86);
+    box-shadow:
+      0 1.5rem 4rem rgba(0, 0, 0, 0.38),
+      inset 0 1px 0 rgba(255, 255, 255, 0.035);
+    font-size: 1.1rem;
+    backdrop-filter: blur(5px);
   }
+
+  /*
+    Header content is intentionally stacked so title, fandom pills, summary,
+    warnings, and chapter-index links remain readable on narrow screens.
+  */
 
   .chapter-header {
     display: flex;
@@ -253,122 +323,157 @@ const nextChapter =
     line-height: 1.3;
   }
 
-  .fandom-list {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.5rem;
-  margin: 0.25rem 0 0.5rem 0;
-}
-
-.fandom-pill {
-  display: inline-block;
-  padding: 0.25rem 0.7rem;
-  border: 1px solid #5a4a2a;
-  border-radius: 999px;
-  background: #1a1a1a;
-  color: #d4b26a;
-  font-size: 0.9rem;
-  letter-spacing: 0.04em;
-  text-decoration: none;
-  transition: background 0.15s ease, border-color 0.15s ease, color 0.15s ease;
-}
-
-.fandom-pill:hover {
-  background: #222;
-  border-color: #7a6336;
-  color: #e5c27a;
-  text-decoration: none;
-}
-
-.crossover-pill {
-  border-color: #4f3d5e;
-  color: #c9a7e8;
-}
-
   .chapter-summary,
   .content-warnings {
     margin: 0;
     font-style: italic;
   }
 
+  /*
+    Author notes are visually quieter than the story body, but still remain inside
+    the chapter header because they are metadata rather than story content.
+  */
+
   .authors-note {
-  font-size: 0.9rem;
-  font-style: italic;
-  opacity: 0.9;
-  margin-top: 1rem;
-}
+    margin-top: 1rem;
+    font-size: 0.9rem;
+    font-style: italic;
+    opacity: 0.9;
+  }
 
-.authors-note p {
-  margin: 0 0 0.75rem 0;
-}
+  .authors-note p {
+    margin: 0 0 0.75rem;
+  }
 
-.authors-note p:last-child {
-  margin-bottom: 0;
-}
+  .authors-note p:last-child {
+    margin-bottom: 0;
+  }
 
   .word-count {
     margin: 0;
   }
 
+  /*
+    Story paragraphs inherit the chapter container width and typography.
+    The margin here controls rendered Markdown paragraph spacing inside the article.
+  */
+
   .chapter p {
-    margin: 1.10rem 0;
+    margin: 1.1rem 0;
   }
 
   .chapter hr {
     margin: 2rem 0;
   }
 
+  /*
+    Previous / back-to-top / next navigation uses three columns on desktop and
+    collapses into a stacked layout on mobile.
+  */
+
   .chapter-nav {
-    display: flex;
-    justify-content: space-between;
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    align-items: center;
     gap: 1rem;
     margin-top: 2rem;
     padding-top: 1rem;
     border-top: 1px solid #2a2a2a;
   }
 
-  .chapter-nav > div {
-    flex: 1;
+  .chapter-nav-previous {
+    text-align: left;
+  }
+
+  .chapter-nav-top {
+    text-align: center;
   }
 
   .chapter-nav-next {
     text-align: right;
   }
 
-  .chapter-nav a {
+  .chapter-nav a,
+  .chapter-nav button {
+    font-family: inherit;
     font-size: 0.95rem;
   }
 
+  .chapter-nav button {
+    padding: 0.45rem 0.85rem;
+    border: 1px solid rgba(212, 178, 106, 0.45);
+    border-radius: 999px;
+    background: rgba(21, 21, 21, 0.9);
+    color: #d4b26a;
+    cursor: pointer;
+    transition:
+      border-color 150ms ease,
+      background-color 150ms ease,
+      color 150ms ease,
+      transform 150ms ease;
+  }
+
+  .chapter-nav button:hover,
+  .chapter-nav button:focus-visible {
+    border-color: #d4b26a;
+    background: #1b1b1b;
+    color: #e5c27a;
+    transform: translateY(-1px);
+    outline: none;
+  }
+
+  .chapter-nav-previous:empty,
+  .chapter-nav-next:empty {
+    min-height: 1px;
+  }
+
   .series-index-link {
-  text-align: center;
-  margin-bottom: 1.5rem;
-}
+    margin-bottom: 1.5rem;
+    text-align: center;
+  }
 
-.series-index-link a {
-  font-size: 0.9rem;
-  opacity: 0.8;
-}
+  .series-index-link a {
+    font-size: 0.9rem;
+    opacity: 0.8;
+  }
 
-.series-index-link a:hover {
-  opacity: 1;
-}
+  .series-index-link a:hover {
+    opacity: 1;
+  }
 
-  .breadcrumb {
-  margin: 0 0 1rem 0;
-  font-size: 0.95rem;
-  opacity: 0.8;
-}
+  /*
+    Explicit focus treatment helps keyboard users keep track of links inside the
+    dense reading layout.
+  */
 
-.breadcrumb a {
-  text-decoration: none;
-}
+  .chapter a:focus-visible {
+    outline: 2px solid rgba(212, 178, 106, 0.75);
+    outline-offset: 3px;
+  }
 
-.authors-note img {
-    display: inline-block;
-    vertical-align: middle;
-    margin-left: 0.5rem;
-    height: 31px;
-    position: relative;
-    top: -1px; 
+  @media (max-width: 640px) {
+    .chapter {
+      padding: 1.1rem;
+      border-radius: 0.85rem;
+    }
+
+    .series-title {
+      font-size: 1.65rem;
+    }
+
+    .chapter-title {
+      font-size: 1.35rem;
+    }
+
+    .chapter-nav {
+      grid-template-columns: 1fr;
+      align-items: stretch;
+    }
+
+    .chapter-nav-previous,
+    .chapter-nav-top,
+    .chapter-nav-next {
+      text-align: left;
+    }
   }
 </style>

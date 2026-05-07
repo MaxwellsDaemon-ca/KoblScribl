@@ -1,0 +1,80 @@
+---
+import "../styles/nsfw-modal.css";
+---
+
+<div id="nsfw-modal" class="nsfw-modal hidden" aria-hidden="true">
+  <div
+    class="nsfw-modal-content"
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="nsfw-modal-title"
+  >
+    <h3 id="nsfw-modal-title">NSFW Content Warning</h3>
+
+    <p>
+      This work contains NSFW content. Please continue only if you are 18+ or of
+      legal age in your region.
+    </p>
+
+    <div class="nsfw-modal-actions">
+      <button id="nsfw-cancel" type="button">Cancel</button>
+      <button id="nsfw-confirm" type="button">I am 18+</button>
+    </div>
+  </div>
+</div>
+
+<script>
+  /**
+   * Lightweight session-only age gate for links marked with data-nsfw="true".
+   * The confirmation is intentionally not persisted beyond the browser session.
+   */
+  let pendingHref: string | null = null;
+
+  const modal = document.getElementById("nsfw-modal");
+  const confirmButton = document.getElementById("nsfw-confirm");
+  const cancelButton = document.getElementById("nsfw-cancel");
+  const nsfwLinks = document.querySelectorAll<HTMLAnchorElement>("a[data-nsfw='true']");
+
+  const closeModal = () => {
+    pendingHref = null;
+    modal?.classList.add("hidden");
+    modal?.setAttribute("aria-hidden", "true");
+  };
+
+  const openModal = (href: string) => {
+    pendingHref = href;
+    modal?.classList.remove("hidden");
+    modal?.setAttribute("aria-hidden", "false");
+  };
+
+  for (const link of nsfwLinks) {
+    link.addEventListener("click", (event) => {
+      const alreadyConfirmed = sessionStorage.getItem("nsfw-confirmed") === "true";
+
+      if (alreadyConfirmed) return;
+
+      event.preventDefault();
+      openModal(link.href);
+    });
+  }
+
+  cancelButton?.addEventListener("click", closeModal);
+
+  modal?.addEventListener("click", (event) => {
+    if (event.target === modal) closeModal();
+  });
+
+  document.addEventListener("keydown", (event) => {
+    if (event.key === "Escape" && !modal?.classList.contains("hidden")) {
+      closeModal();
+    }
+  });
+
+  confirmButton?.addEventListener("click", () => {
+    sessionStorage.setItem("nsfw-confirmed", "true");
+
+    if (pendingHref) {
+      window.location.href = pendingHref;
+    }
+  });
+</script>

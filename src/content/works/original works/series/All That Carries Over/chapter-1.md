@@ -5,8 +5,8 @@ workType: "series"
 storyGroup: "main"
 seriesTitle: "All That Carries Over"
 seriesSlug: "all-that-carries-over"
-fandoms: [""]
-fandomSlug: [""]
+fandoms: []
+fandomSlug: []
 seriesSummary: |
     The game ended. The world did not.
 
@@ -15,11 +15,287 @@ seriesSummary: |
     To find the way home, Veyr must survive a world that was never as simple as its mechanics – where companions are people, desire has weight, and every ending asks what he is willing to carry over.
 summary: |
     The world takes back blood, broken flesh, and endings. It leaves Veyr with the memory of a gift no longer given.
-chapterNumber: 1
-chapterTitle: "Prologue: A Feather the World Took Back"
+chapterNumber: 0
+chapterTitle: "A Feather the World Took Back"
 wordCount: 1530
 status: "published"
 published: true
+tags:
+  - type: "species"
+    label: "Mongoose"
+    slug: "mongoose"
+
+  - type: "species"
+    label: "Wolf"
+    slug: "wolf"
+
+  - type: "species"
+    label: "Bat"
+    slug: "bat"
+
+  - type: "species"
+    label: "Gryphon"
+    slug: "gryphon"
+
+  - type: "species"
+    label: "Cheetah"
+    slug: "cheetah"
+
+  - type: "species"
+    label: "Cobra"
+    slug: "cobra"
+
+  - type: "species"
+    label: "Drake"
+    slug: "drake"
+
+  - type: "genre"
+    label: "Fantasy"
+    slug: "fantasy"
+
+  - type: "genre"
+    label: "Action"
+    slug: "action"
+
+  - type: "genre"
+    label: "Isekai"
+    slug: "isekai"
+
+  - type: "genre"
+    label: "LitRPG"
+    slug: "litrpg"
+
+  - type: "genre"
+    label: "Romance"
+    slug: "romance"
+
+  - type: "genre"
+    label: "Erotica"
+    slug: "erotica"
+
+  - type: "relationship"
+    label: "Primary Romance"
+    slug: "primary-romance"
+
+  - type: "relationship"
+    label: "Friends with Benefits"
+    slug: "friends-with-benefits"
+
+  - type: "relationship"
+    label: "Found Family"
+    slug: "found-family"
+
+  - type: "relationship"
+    label: "Party Bonds"
+    slug: "party-bonds"
+
+  - type: "relationship"
+    label: "Nonexclusive Relationships"
+    slug: "nonexclusive-relationships"
+
+  - type: "relationship"
+    label: "Platonic Intimacy"
+    slug: "platonic-intimacy"
+
+  - type: "relationship"
+    label: "Sworn Loyalty"
+    slug: "sworn-loyalty"
+
+  - type: "relationship"
+    label: "M/F"
+    slug: "m-f"
+
+  - type: "relationship"
+    label: "M/M"
+    slug: "m-m"
+
+  - type: "relationship"
+    label: "M/Multi"
+    slug: "m-multi"
+
+  - type: "relationship"
+    label: "F/F"
+    slug: "f-f"
+
+  - type: "character"
+    label: "Veyr"
+    slug: "veyr"
+
+  - type: "character"
+    label: "Sylke"
+    slug: "sylke"
+
+  - type: "character"
+    label: "Rell"
+    slug: "rell"
+
+  - type: "character"
+    label: "Saffra"
+    slug: "saffra"
+
+  - type: "character"
+    label: "Darian"
+    slug: "darian"
+
+  - type: "character"
+    label: "Amari"
+    slug: "amari"
+
+  - type: "character"
+    label: "Orric"
+    slug: "orric"
+
+  - type: "setting"
+    label: "EVO: Feral Genesis"
+    slug: "evo-feral-genesis"
+
+  - type: "theme"
+    label: "Fantasy vs Consequence"
+    slug: "fantasy-vs-consequence"
+
+  - type: "theme"
+    label: "Memory"
+    slug: "memory"
+
+  - type: "theme"
+    label: "Identity"
+    slug: "identity"
+
+  - type: "theme"
+    label: "Chosen Self"
+    slug: "chosen-self"
+
+  - type: "theme"
+    label: "Consent"
+    slug: "consent"
+
+  - type: "theme"
+    label: "Grief"
+    slug: "grief"
+
+  - type: "theme"
+    label: "Moral Consequences"
+    slug: "moral-consequences"
+
+  - type: "theme"
+    label: "Being Known"
+    slug: "being-known"
+
+  - type: "theme"
+    label: "Trust"
+    slug: "trust"
+
+  - type: "trope"
+    label: "New Game Plus"
+    slug: "new-game-plus"
+
+  - type: "trope"
+    label: "Death Loop"
+    slug: "death-loop"
+
+  - type: "trope"
+    label: "Save Points"
+    slug: "save-points"
+
+  - type: "trope"
+    label: "Trapped in a Game"
+    slug: "trapped-in-a-game"
+
+  - type: "trope"
+    label: "Avatar Made Flesh"
+    slug: "avatar-made-flesh"
+
+  - type: "trope"
+    label: "Party Recruitment"
+    slug: "party-recruitment"
+
+  - type: "trope"
+    label: "Body Transformation"
+    slug: "body-transformation"
+
+  - type: "trope"
+    label: "Soulbound World"
+    slug: "soulbound-world"
+
+  - type: "trope"
+    label: "Companions Remember Nothing"
+    slug: "companions-remember-nothing"
+
+  - type: "content"
+    label: "Adult Content"
+    slug: "adult-content"
+
+  - type: "content"
+    label: "Violence"
+    slug: "violence"
+
+  - type: "content"
+    label: "Death"
+    slug: "death"
+
+  - type: "content"
+    label: "Blood"
+    slug: "blood"
+
+  - type: "content"
+    label: "Trauma"
+    slug: "trauma"
+
+  - type: "content"
+    label: "Body Horror Elements"
+    slug: "body-horror-elements"
+
+  - type: "content"
+    label: "Emotional Distress"
+    slug: "emotional-distress"
+
+  - type: "mood"
+    label: "Serious"
+    slug: "serious"
+
+  - type: "mood"
+    label: "Action-Heavy"
+    slug: "action-heavy"
+
+  - type: "mood"
+    label: "Emotional"
+    slug: "emotional"
+
+  - type: "mood"
+    label: "Erotic"
+    slug: "erotic"
+
+  - type: "mood"
+    label: "Romantic"
+    slug: "romantic"
+
+  - type: "mood"
+    label: "Bittersweet"
+    slug: "bittersweet"
+
+  - type: "mood"
+    label: "Dark Undertones"
+    slug: "dark-undertones"
+
+  - type: "rating"
+    label: "Explicit"
+    slug: "explicit"
+
+  - type: "general"
+    label: "Furry"
+    slug: "furry"
+
+  - type: "general"
+    label: "Queer Themes"
+    slug: "queer-themes"
+
+  - type: "general"
+    label: "Anthro Characters"
+    slug: "anthro-characters"
+
+  - type: "general"
+    label: "Feral Characters"
+    slug: "feral-characters"
 ---
 
 Air tore into his lungs with a sharp gasp. His hand flew to his chest, claws catching on coat, fur, muscle – nothing broken, nothing open, nothing where the puncture should have been. His heart hammered enough to hurt. The pain hadn't left him. He could still taste the blood in his mouth, still feel it filling his chest, thick and hot, leaking out of the hole that had punched through him. He had been standing over Saffra when it happened. Or trying to. Trying to be something between her and the thing coming for them. “Run,” she had told him, as her golden eyes dimmed. As if he could do that.

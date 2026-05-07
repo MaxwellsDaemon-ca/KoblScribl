@@ -1,0 +1,85 @@
+/*
+  Decorative fixed parallax backdrop used by BaseLayout.astro.
+
+  Keep this layer at z-index: 0 rather than a negative index. A negative fixed
+  layer can slip behind the body/html background in some browsers or after layout
+  refactors, which makes the parallax appear to vanish entirely. Page content is
+  lifted above it by BaseLayout's header/main z-index rules.
+*/
+:root {
+  --parallax-y: 0px;
+  --parallax-soft-y: 0px;
+}
+
+.site-parallax {
+  position: fixed;
+  inset: -12vh -10vw;
+  z-index: 0;
+  pointer-events: none;
+  background:
+    linear-gradient(180deg, #0d0d0d 0%, #101010 42%, #15110c 100%);
+}
+
+.site-parallax__layer {
+  position: absolute;
+  inset: 0;
+  will-change: transform;
+}
+
+.site-parallax__layer--base {
+  background:
+    radial-gradient(circle at 16% 4%, rgba(212, 178, 106, 0.16), transparent 28rem),
+    radial-gradient(circle at 86% 10%, rgba(125, 211, 252, 0.1), transparent 30rem),
+    radial-gradient(circle at 52% 96%, rgba(212, 178, 106, 0.07), transparent 34rem);
+  transform: translate3d(0, calc(var(--parallax-y) * 0.35), 0);
+}
+
+.site-parallax__layer--gold {
+  inset: -18vh -14vw;
+  background:
+    radial-gradient(circle at 18% 28%, rgba(212, 178, 106, 0.08), transparent 20rem),
+    radial-gradient(circle at 74% 82%, rgba(212, 178, 106, 0.045), transparent 26rem);
+  transform: translate3d(0, calc(var(--parallax-y) * 0.72), 0);
+}
+
+.site-parallax__layer--blue {
+  inset: -16vh -12vw;
+  background:
+    radial-gradient(circle at 80% 22%, rgba(125, 211, 252, 0.075), transparent 22rem),
+    radial-gradient(circle at 24% 76%, rgba(125, 211, 252, 0.04), transparent 24rem);
+  transform: translate3d(0, calc(var(--parallax-soft-y) * 0.9), 0);
+}
+
+.site-parallax__layer--vignette {
+  background:
+    radial-gradient(circle at 50% 18%, transparent 0%, rgba(0, 0, 0, 0.08) 42%, rgba(0, 0, 0, 0.44) 100%),
+    linear-gradient(90deg, rgba(0, 0, 0, 0.28), transparent 22%, transparent 78%, rgba(0, 0, 0, 0.28));
+}
+
+body.chapter-page .site-parallax__layer--base {
+  background:
+    radial-gradient(circle at 12% 10%, rgba(212, 178, 106, 0.18), transparent 30rem),
+    radial-gradient(circle at 86% 14%, rgba(125, 211, 252, 0.12), transparent 32rem),
+    radial-gradient(circle at 50% 92%, rgba(212, 178, 106, 0.09), transparent 36rem);
+}
+
+body.chapter-page .site-parallax__layer--gold {
+  background:
+    radial-gradient(circle at 22% 30%, rgba(212, 178, 106, 0.105), transparent 22rem),
+    radial-gradient(circle at 68% 86%, rgba(212, 178, 106, 0.055), transparent 28rem);
+}
+
+body.chapter-page .site-parallax__layer--blue {
+  background:
+    radial-gradient(circle at 82% 26%, rgba(125, 211, 252, 0.09), transparent 24rem),
+    radial-gradient(circle at 18% 72%, rgba(125, 211, 252, 0.045), transparent 25rem);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .site-parallax__layer,
+  .site-parallax__layer--base,
+  .site-parallax__layer--gold,
+  .site-parallax__layer--blue {
+    transform: none;
+  }
+}

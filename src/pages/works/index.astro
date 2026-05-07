@@ -1,84 +1,71 @@
 ---
+/**
+ * Top-level works directory route.
+ *
+ * This page is the main entry point for the story archive. It groups published works
+ * into the three major browsing categories: fandom fanfiction, crossovers, and original works.
+ */
 import BaseLayout from "../../layouts/BaseLayout.astro";
+import "../../styles/shared-directory.css";
 import { getCollection } from "astro:content";
 import type { CollectionEntry } from "astro:content";
+import { buildFandomStats } from "../../lib/workUtils";
 
 const works: CollectionEntry<"works">[] = await getCollection("works");
 
+/**
+ * Only published works should appear in public archive navigation.
+ *
+ * Drafts and unpublished entries may still exist in the content collection, but they are
+ * intentionally excluded from all counts and links shown on this page.
+ */
 const publishedWorks = works.filter((work) => work.data.published);
 
-const originalWorks = publishedWorks.filter(
-  (work) => work.data.category === "original" && work.data.fandoms.length === 0
-);
+/**
+ * Split the archive into its top-level browsing buckets.
+ *
+ * Fanfiction is further grouped by fandom below, while crossovers and original works
+ * each receive a single category card that links to their dedicated index pages.
+ */
+const originalWorks = publishedWorks.filter((work) => work.data.category === "original");
+const crossoverWorks = publishedWorks.filter((work) => work.data.category === "crossover");
+const normalWorks = publishedWorks.filter((work) => work.data.category === "fanfiction");
 
-const crossoverWorks = publishedWorks.filter(
-  (work) => work.data.category === "crossover" && work.data.fandoms.length > 1
-);
+/**
+ * Build per-fandom summary cards from published fanfiction works.
+ *
+ * Entries without fandom metadata are ignored here because the fandom grid depends on
+ * matching `fandoms` and `fandomSlug` values to generate valid links.
+ */
+const fandomStats = buildFandomStats(normalWorks.filter((work) => work.data.fandoms.length > 0));
 
-const normalWorks = publishedWorks.filter(
-  (work) => work.data.category === "fanfiction" && work.data.fandoms.length > 0
-);
-
-type FandomStats = {
-  fandom: string;
-  fandomSlug: string;
-  works: CollectionEntry<"works">[];
-  totalWorks: number;
-  seriesCount: number;
-  oneShotCount: number;
-};
-
-const fandomMap = new Map<string, CollectionEntry<"works">[]>();
-
-for (const work of normalWorks) {
-  for (const fandom of work.data.fandoms) {
-    if (!fandomMap.has(fandom)) {
-      fandomMap.set(fandom, []);
-    }
-    fandomMap.get(fandom)!.push(work);
-  }
-}
-
-const fandomStats: FandomStats[] = [...fandomMap.entries()]
-  .map(([fandom, fandomWorks]) => {
-    const seriesTitles = new Set(
-      fandomWorks
-        .filter((work) => work.data.workType === "series" && work.data.seriesTitle)
-        .map((work) => work.data.seriesTitle!)
-    );
-
-    const oneShots = fandomWorks.filter((work) => work.data.workType === "oneshot");
-
-    return {
-      fandom,
-      fandomSlug: fandomWorks[0].data.fandomSlug[0],
-      works: fandomWorks,
-      totalWorks: fandomWorks.length,
-      seriesCount: seriesTitles.size,
-      oneShotCount: oneShots.length,
-    };
-  })
-  .sort((a, b) => a.fandom.localeCompare(b.fandom));
-
+/**
+ * Crossover summary counts.
+ *
+ * Series are counted by unique title rather than raw chapter count so the card can show
+ * how many series are available alongside the total number of crossover works.
+ */
 const crossoverSeriesTitles = new Set(
   crossoverWorks
     .filter((work) => work.data.workType === "series" && work.data.seriesTitle)
     .map((work) => work.data.seriesTitle!)
 );
 
-const crossoverOneShots = crossoverWorks.filter(
-  (work) => work.data.workType === "oneshot"
-);
+const crossoverOneShots = crossoverWorks.filter((work) => work.data.workType === "oneshot");
 
+/**
+ * Original-work summary counts.
+ *
+ * Like crossovers, original series are counted by unique series title while one-shots
+ * are counted as individual works.
+ */
 const originalSeriesTitles = new Set(
   originalWorks
     .filter((work) => work.data.workType === "series" && work.data.seriesTitle)
     .map((work) => work.data.seriesTitle!)
 );
 
-const originalOneShots = originalWorks.filter(
-  (work) => work.data.workType === "oneshot"
-);
+const originalOneShots = originalWorks.filter((work) => work.data.workType === "oneshot");
 ---
 
 <BaseLayout title="Scribls!" description="Hoard of Scribls, organized by fandom and category">
@@ -87,20 +74,17 @@ const originalOneShots = originalWorks.filter(
       <h2>Scribls!</h2>
     </header>
 
-    <section class="directory-section">
-      <h3>Fandoms</h3>
+    <!-- Fanfiction is displayed as a grid of fandom cards, with one card per fandom slug. -->
+    <section class="directory-section" aria-labelledby="fandoms-heading">
+      <h3 id="fandoms-heading">Fandoms</h3>
 
       {fandomStats.length === 0 ? (
         <p>No fandom works have been added yet.</p>
       ) : (
         <div class="category-grid">
           {fandomStats.map((entry) => (
-            <article class="category-card">
-              <h4>
-                <a href={`/works/${entry.fandomSlug}`}>
-                  {entry.fandom}
-                </a>
-              </h4>
+            <a class="category-card" href={`/works/${entry.fandomSlug}`}>
+              <h4>{entry.fandom}</h4>
 
               <p class="category-counts">
                 {entry.totalWorks} work{entry.totalWorks === 1 ? "" : "s"}
@@ -110,23 +94,22 @@ const originalOneShots = originalWorks.filter(
                 <li>{entry.seriesCount} series</li>
                 <li>{entry.oneShotCount} one-shot{entry.oneShotCount === 1 ? "" : "s"}</li>
               </ul>
-            </article>
+            </a>
           ))}
         </div>
       )}
     </section>
 
-    <section class="directory-section">
-      <h3>Crossovers</h3>
+    <!-- Crossovers are summarized as a single category card because they have a shared index route. -->
+    <section class="directory-section" aria-labelledby="crossovers-heading">
+      <h3 id="crossovers-heading">Crossovers</h3>
 
       {crossoverWorks.length === 0 ? (
         <p>No crossover works have been added yet.</p>
       ) : (
         <div class="single-card-row">
-          <article class="category-card">
-            <h4>
-              <a href="/works/crossovers">Browse Crossovers</a>
-            </h4>
+          <a class="category-card" href="/works/crossovers">
+            <h4>Browse Crossovers</h4>
 
             <p class="category-counts">
               {crossoverWorks.length} work{crossoverWorks.length === 1 ? "" : "s"}
@@ -134,24 +117,25 @@ const originalOneShots = originalWorks.filter(
 
             <ul class="category-meta">
               <li>{crossoverSeriesTitles.size} series</li>
-              <li>{crossoverOneShots.length} one-shot{crossoverOneShots.length === 1 ? "" : "s"}</li>
+              <li>
+                {crossoverOneShots.length} one-shot{crossoverOneShots.length === 1 ? "" : "s"}
+              </li>
             </ul>
-          </article>
+          </a>
         </div>
       )}
     </section>
 
-    <section class="directory-section">
-      <h3>Original Works</h3>
+    <!-- Original works are summarized as a single category card with their own index route. -->
+    <section class="directory-section" aria-labelledby="original-works-heading">
+      <h3 id="original-works-heading">Original Works</h3>
 
       {originalWorks.length === 0 ? (
         <p>No original works have been added yet.</p>
       ) : (
         <div class="single-card-row">
-          <article class="category-card">
-            <h4>
-              <a href="/works/originals">Browse Original Works</a>
-            </h4>
+          <a class="category-card" href="/works/originals">
+            <h4>Browse Original Works</h4>
 
             <p class="category-counts">
               {originalWorks.length} work{originalWorks.length === 1 ? "" : "s"}
@@ -161,78 +145,9 @@ const originalOneShots = originalWorks.filter(
               <li>{originalSeriesTitles.size} series</li>
               <li>{originalOneShots.length} one-shot{originalOneShots.length === 1 ? "" : "s"}</li>
             </ul>
-          </article>
+          </a>
         </div>
       )}
     </section>
   </section>
 </BaseLayout>
-
-<style>
-  .works-directory {
-    display: flex;
-    flex-direction: column;
-    gap: 2rem;
-  }
-
-  .directory-header h2 {
-    margin-bottom: 0.5rem;
-  }
-
-  .directory-intro {
-    margin: 0;
-    max-width: 60ch;
-    opacity: 0.9;
-  }
-
-  .directory-section {
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-  }
-
-  .directory-section h3 {
-    margin-bottom: 0;
-  }
-
-  .category-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-    gap: 1rem;
-  }
-
-  .single-card-row {
-    max-width: 320px;
-  }
-
-  .category-card {
-    border: 1px solid #2a2a2a;
-    background: #151515;
-    border-radius: 0.75rem;
-    padding: 1rem;
-    height: 100%;
-  }
-
-  .category-card h4 {
-    margin: 0 0 0.5rem 0;
-    font-size: 1.1rem;
-  }
-
-  .category-card h4 a {
-    text-decoration: none;
-  }
-
-  .category-counts {
-    margin: 0 0 0.75rem 0;
-    color: #cfc7bb;
-  }
-
-  .category-meta {
-    margin: 0;
-    padding-left: 1.2rem;
-  }
-
-  .category-meta li {
-    margin: 0.25rem 0;
-  }
-</style>

@@ -1,52 +1,115 @@
 ---
+import "../styles/site-parallax.css";
+
 interface Props {
   title: string;
   description?: string;
+  pageClass?: string;
 }
 
-const { title,
-  description = "Kobold keep many scribls. Some shiny, some messy, some bite back."
- } = Astro.props;
+const {
+  title,
+  description = "Kobold keep many scribls. Some shiny, some messy, some bite back.",
+  pageClass = "",
+} = Astro.props;
 ---
 
 <!doctype html>
 <html lang="en">
   <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width" />
-  <meta name="description" content={description} />
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width" />
+    <meta name="description" content={description} />
 
-  <title>{title} | KoblScribl</title>
+    <title>{title} | KoblScribl</title>
 
-  <meta property="og:title" content={title} />
-  <meta property="og:description" content={description} />
-  <meta property="og:url" content={Astro.url.href} />
-  <meta property="og:site_name" content="KoblScribl" />
-  <meta property="og:type" content="website" />
-</head>
-  <body>
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={Astro.url.href} />
+    <meta property="og:site_name" content="KoblScribl" />
+    <meta property="og:type" content="website" />
+  </head>
+
+  <body class={pageClass}>
+    <div class="site-parallax" aria-hidden="true">
+      <div class="site-parallax__layer site-parallax__layer--base"></div>
+      <div class="site-parallax__layer site-parallax__layer--gold"></div>
+      <div class="site-parallax__layer site-parallax__layer--blue"></div>
+      <div class="site-parallax__layer site-parallax__layer--vignette"></div>
+    </div>
+
     <header class="site-header">
-  <div class="site-header-inner">
-    <h1><a href="/">KoblScribl</a></h1>
+      <div class="site-header-inner">
+        <h1><a href="/">KoblScribl</a></h1>
 
-    <nav class="site-nav" aria-label="Main navigation">
-      <a href="/">Home</a>
-      <a href="/works">Scribls!</a>
-    </nav>
-  </div>
-</header>
+        <nav class="site-nav" aria-label="Main navigation">
+          <a href="/">Home</a>
+          <a href="/works">Scribls!</a>
+        </nav>
+      </div>
+    </header>
 
     <main>
       <slot />
     </main>
+
+    <script is:inline>
+      (() => {
+        /**
+         * Keeps the decorative backdrop moving cheaply with requestAnimationFrame,
+         * while fully respecting the reader's reduced-motion preference.
+         */
+        const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+
+        if (prefersReducedMotion.matches) {
+          document.documentElement.style.setProperty("--parallax-y", "0px");
+          document.documentElement.style.setProperty("--parallax-soft-y", "0px");
+          return;
+        }
+
+        let ticking = false;
+
+        const updateParallax = () => {
+          const scrollY = window.scrollY || window.pageYOffset || 0;
+          document.documentElement.style.setProperty("--parallax-y", `${scrollY * -0.12}px`);
+          document.documentElement.style.setProperty("--parallax-soft-y", `${scrollY * 0.06}px`);
+          ticking = false;
+        };
+
+        const requestUpdate = () => {
+          if (ticking) return;
+
+          window.requestAnimationFrame(updateParallax);
+          ticking = true;
+        };
+
+        updateParallax();
+        window.addEventListener("scroll", requestUpdate, { passive: true });
+      })();
+    </script>
   </body>
 </html>
 
 <style>
+  :global(*) {
+    box-sizing: border-box;
+  }
+
+  :global(html) {
+    min-height: 100%;
+    background: #0f0f0f;
+  }
+
   :global(body) {
+    min-height: 100vh;
     margin: 0;
     font-family: "Georgia", "Times New Roman", serif;
-    background: #0f0f0f;
+    /*
+      The visible background comes from .site-parallax. Keeping body transparent
+      prevents the fixed decorative layer from being covered by an opaque page
+      background while still letting html provide a safe fallback color.
+    */
+    background: transparent;
     color: #e8e6e3;
     line-height: 1.75;
   }
@@ -61,18 +124,21 @@ const { title,
   }
 
   .site-header {
-    border-bottom: 1px solid #2a2a2a;
-    background: #141414;
+    position: relative;
+    z-index: 10;
+    border-bottom: 1px solid rgba(212, 178, 106, 0.16);
+    background: rgba(20, 20, 20, 0.88);
+    backdrop-filter: blur(8px);
   }
 
   .site-header-inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
     max-width: 950px;
     margin: 0 auto;
     padding: 1rem 2rem;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    gap: 1rem;
   }
 
   .site-header h1 {
@@ -88,8 +154,8 @@ const { title,
 
   .site-nav {
     display: flex;
-    gap: 1rem;
     flex-wrap: wrap;
+    gap: 1rem;
   }
 
   .site-nav a {
@@ -102,13 +168,11 @@ const { title,
   }
 
   main {
+    position: relative;
+    z-index: 1;
     max-width: 800px;
     margin: 0 auto;
     padding: 2rem;
-  }
-
-  article {
-    margin-top: 1.5rem;
   }
 
   h2 {
@@ -118,9 +182,9 @@ const { title,
 
   h3 {
     margin-top: 2rem;
-    font-size: 1.2rem;
-    border-bottom: 1px solid #2a2a2a;
     padding-bottom: 0.3rem;
+    border-bottom: 1px solid #2a2a2a;
+    font-size: 1.2rem;
   }
 
   p {
@@ -128,9 +192,9 @@ const { title,
   }
 
   hr {
+    margin: 2rem 0;
     border: none;
     border-top: 1px solid #2a2a2a;
-    margin: 2rem 0;
   }
 
   ul {
@@ -139,5 +203,16 @@ const { title,
 
   li {
     margin: 0.4rem 0;
+  }
+
+  @media (max-width: 640px) {
+    .site-header-inner {
+      align-items: flex-start;
+      flex-direction: column;
+    }
+
+    main {
+      padding: 1.25rem;
+    }
   }
 </style>

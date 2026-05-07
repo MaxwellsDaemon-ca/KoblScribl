@@ -1,0 +1,113 @@
+---
+/**
+ * Custom 404 route for KoblScribl.
+ *
+ * Astro uses this file automatically when a generated page cannot be found.
+ * The page keeps the same site layout and shared card styling as the rest of the archive,
+ * while giving readers clear recovery paths back into the main browsing sections.
+ */
+import BaseLayout from "../layouts/BaseLayout.astro";
+import "../styles/shared-directory.css";
+---
+
+<BaseLayout title="Page Not Found | KoblScribl">
+  <main class="not-found-page">
+    <!-- Primary error message. Kept friendly and on-brand instead of using a generic browser-style 404. -->
+    <section class="not-found-hero" aria-labelledby="not-found-heading">
+      <p class="eyebrow">404</p>
+
+      <h1 id="not-found-heading">This Scribl wandered off.</h1>
+
+      <p class="hero-summary">
+        The page you were looking for does not seem to exist anymore. It may have been moved,
+        renamed, unpublished, or possibly eaten by a particularly determined treasure chest.
+      </p>
+    </section>
+
+    <!-- Main recovery action for readers who simply want to return to the site root. -->
+    <section class="directory-section" aria-labelledby="head-back-heading">
+      <h2 id="head-back-heading">Head Back</h2>
+
+      <div class="single-card-row">
+        <a class="category-card featured-card" href="/">
+          <h3>Return Home</h3>
+          <p>Head back to the main page and start browsing from the top.</p>
+        </a>
+      </div>
+    </section>
+
+    <!-- Secondary recovery actions for readers who want to continue browsing the archive directly. -->
+    <section class="directory-section" aria-labelledby="browse-archive-heading">
+      <h2 id="browse-archive-heading">Browse the Archive</h2>
+
+      <div class="category-grid">
+        <a class="category-card" href="/works">
+          <h3>Scribls!</h3>
+          <p>Browse the full works directory.</p>
+        </a>
+
+        <a class="category-card" href="/works/originals">
+          <h3>Original Works</h3>
+          <p>Find stories set outside existing fandoms.</p>
+        </a>
+
+        <a class="category-card" href="/works/crossovers">
+          <h3>Crossovers</h3>
+          <p>Browse stories where worlds, casts, and problems overlap.</p>
+        </a>
+      </div>
+    </section>
+  </main>
+</BaseLayout>
+
+<style>
+  /*
+    404-specific page styles.
+
+    Shared card, grid, and directory spacing rules come from shared-directory.css.
+    These local styles only handle the centered error presentation and featured card tweaks.
+  */
+
+  .not-found-page {
+    text-align: center;
+  }
+
+  .not-found-hero {
+    max-width: 42rem;
+    margin: 0 auto 2rem;
+  }
+
+  /*
+    Eyebrow label for the status code.
+    This visually separates the numeric 404 from the more playful page heading.
+  */
+
+  .eyebrow {
+    margin: 0 0 0.5rem;
+    color: #9ca3af;
+    font-size: 0.9rem;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+  }
+
+  .hero-summary {
+    max-width: 38rem;
+    margin-inline: auto;
+    color: #d4d4d4;
+  }
+
+  /*
+    The home-return card is intentionally centered because it is the primary recovery action.
+    Other archive cards use the default left-aligned shared card style.
+  */
+
+  .featured-card {
+    text-align: center;
+  }
+
+  .featured-card p {
+    max-width: 34rem;
+    margin-inline: auto;
+  }
+</style>

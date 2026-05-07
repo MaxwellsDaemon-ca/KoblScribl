@@ -23,6 +23,82 @@ published: true
 authorsNote: "This work has been proofread/beta'd by Irisfofs and DuskGuard! Thanks you two!"
 contentWarnings: |
     pokémon, tabletop gaming, character death (in-game), shifting group dynamics, therapy session (emotional confrontation, self-blame, boundary-setting), unhealthy coping mechanisms, avoidance disguised as problem-solving, late-night insomnia, intrusive thoughts, mild sexual references (non-graphic), aphrodisiac discussion (semi-clinical infodump that you've probably already read anyway - yeah it came from me (with edits)), strong language, awkward texting, “this is fine” energy, it is not fine
+tags:
+  - type: "relationship"
+    label: "Alexei/Noll"
+    slug: "alexei-noll"
+
+  - type: "relationship"
+    label: "M/M"
+    slug: "m-m"
+
+  - type: "relationship"
+    label: "Slow Burn"
+    slug: "slow-burn"
+
+  - type: "relationship"
+    label: "Consent and Boundaries"
+    slug: "consent-and-boundaries"
+
+  - type: "theme"
+    label: "Trauma Recovery"
+    slug: "trauma-recovery"
+
+  - type: "theme"
+    label: "Therapy"
+    slug: "therapy"
+
+  - type: "theme"
+    label: "Past Abuse"
+    slug: "past-abuse"
+
+  - type: "genre"
+    label: "Slice of Life"
+    slug: "slice-of-life"
+
+  - type: "genre"
+    label: "Romance"
+    slug: "romance"
+
+  - type: "genre"
+    label: "Drama"
+    slug: "drama"
+
+  - type: "mood"
+    label: "Tender"
+    slug: "tender"
+
+  - type: "mood"
+    label: "Heavy Themes"
+    slug: "heavy-themes"
+
+  - type: "trope"
+    label: "Trauma-Informed Romance"
+    slug: "trauma-informed-romance"
+
+  - type: "species"
+    label: "Salandit"
+    slug: "salandit"
+
+  - type: "species"
+    label: "Dragonair"
+    slug: "dragonair"
+
+  - type: "content"
+    label: "References to Past Abuse"
+    slug: "references-to-past-abuse"
+
+  - type: "content"
+    label: "Trauma Responses"
+    slug: "trauma-responses"
+
+  - type: "setting"
+    label: "Halcyon Falls"
+    slug: "halcyon-falls"
+
+  - type: "rating"
+    label: "Eventual NSFW"
+    slug: "eventual-nsfw"
 ---
 
 “And there before you, unaware of your presence and standing in the mire of the Moonlit Swamp, was the quarry your party has been hunting for the past week – the Hydroodra.”

@@ -8,6 +8,46 @@ summary: "A wastelander hiding from some nearby raiders finds an interesting par
 wordCount: 4040
 contentWarnings: "Mentions of gloryholes and self-sex, includes rimming, anal, and a very sassy nightstalker."
 nsfw: true
+tags:
+  - type: "species"
+    label: "Nightstalker"
+    slug: "nightstalker"
+
+  - type: "relationship"
+    label: "M/F"
+    slug: "m-f"
+
+  - type: "character"
+    label: "Nocchi"
+    slug: "nocchi"
+
+  - type: "genre"
+    label: "Smut"
+    slug: "smut"
+
+  - type: "genre"
+    label: "Comedy"
+    slug: "comedy"
+
+  - type: "mood"
+    label: "Raunchy"
+    slug: "raunchy"
+
+  - type: "mood"
+    label: "Absurd"
+    slug: "absurd"
+
+  - type: "trope"
+    label: "Chance Encounter"
+    slug: "chance-encounter"
+
+  - type: "setting"
+    label: "Wasteland"
+    slug: "wasteland"
+
+  - type: "rating"
+    label: "NSFW"
+    slug: "nsfw"
 ---
 
 His boots crunched over the rough, sun-baked earth, each step kicking up a cloud of dust that clung to his jeans. The horizon shimmered with heatwaves, broken only by the skeletal remains of long-abandoned vehicles and the occasional twisted metal sign. A black crow watched him from the rusting hulk of a pickup truck, its beady eyes gleaming with curiosity. He wiped his brow with the back of his hand, leaving a streak of dirt across his forehead. His throat felt as dry as the cracked desert floor beneath him. Ahead loomed the crumbling shell of a gas station, its once-bright colors faded to ghostly pastels. He quickened his pace.

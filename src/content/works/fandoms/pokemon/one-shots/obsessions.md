@@ -11,6 +11,62 @@ published: true
 authorsNote: "I don’t attend strip clubs and I don’t use escorts - this is a fantasy thing, and please be safe if you do something like this. This story breaks a lot of safety rules, including a lack of discussion of limits and any use of a safeword. Practice safe BDSM!"
 nsfw: true
 contentWarnings: "FxF Suicune & Primarina; BDSM, restraints, gags, breath play, anal, vaginal, cunnilingus, temperature play, singing?, maniacal giggling"
+tags:
+  - type: "relationship"
+    label: "Novu/Dazzle"
+    slug: "novu-dazzle"
+
+  - type: "relationship"
+    label: "F/F"
+    slug: "f-f"
+
+  - type: "species"
+    label: "Suicune"
+    slug: "suicune"
+
+  - type: "species"
+    label: "Primarina"
+    slug: "primarina"
+
+  - type: "genre"
+    label: "Smut"
+    slug: "smut"
+
+  - type: "genre"
+    label: "Erotic Drama"
+    slug: "erotic-drama"
+
+  - type: "mood"
+    label: "Intense"
+    slug: "intense"
+
+  - type: "mood"
+    label: "Seductive"
+    slug: "seductive"
+
+  - type: "theme"
+    label: "Obsession"
+    slug: "obsession"
+
+  - type: "trope"
+    label: "Performer and Patron"
+    slug: "performer-and-patron"
+
+  - type: "trope"
+    label: "Power Exchange"
+    slug: "power-exchange"
+
+  - type: "setting"
+    label: "Erotic Club"
+    slug: "erotic-club"
+
+  - type: "content"
+    label: "BDSM"
+    slug: "bdsm"
+
+  - type: "rating"
+    label: "NSFW"
+    slug: "nsfw"
 ---
 
 Novu couldn't shake the haunting image of that alluring mermaid-like enchantress from her thoughts. Ever since she laid eyes on her at La Caverne Cachée, an intriguing new erotic club nestled in the heart of the red light district, the figure had taken up residence in her mind, both adoringly and infuriatingly. Damn her, damn that Primarina to the very depths of the Distortion. Novu paced her cozy, dimly lit home, her mind a swirling sea of images of the elegant dancer undulating gracefully in her water-filled tank, a centerpiece of the club’s allure. Dazzle... that was her name. The mere thought of her caused Novu's flowing tails to twitch erratically, and she tossed her mane in irritation. What was the magnetic pull? Why did thoughts of her linger incessantly? Certainly, she moved with an almost otherworldly elegance in the water... "My domain," Novu mused to herself, as a small revelation washed over her like a gentle tide. "Does she dare to glide with such grace, such finesse, that even I, a Suicune, cannot match in my own element?" Was it jealousy that stirred within her? Or was it envy? Lust? Desire? Perhaps it was a potent blend of all these emotions, intertwining and swirling like a tempestuous sea.

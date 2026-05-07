@@ -1,7 +1,18 @@
 ---
+/**
+ * Dynamic fandom archive route.
+ *
+ * This page generates one `/works/[fandom]` route for each fandom represented by
+ * published fanfiction entries. It displays that fandom's series and one-shots,
+ * with NSFW confirmation support for any linked work marked as mature.
+ */
 import BaseLayout from "../../layouts/BaseLayout.astro";
+import NsfwModal from "../../components/NsfwModal.astro";
+import TagList from "../../components/TagList.astro";
+import "../../styles/shared-directory.css";
 import { getCollection } from "astro:content";
 import type { CollectionEntry } from "astro:content";
+import { buildSeriesCards, sortByTitle } from "../../lib/workUtils";
 import { marked } from "marked";
 
 interface Props {
@@ -9,20 +20,30 @@ interface Props {
   fandomSlug: string;
 }
 
+/**
+ * Renders short markdown-enabled summaries from frontmatter.
+ *
+ * Series summaries may include light formatting such as italics, so they are passed
+ * through `marked` before being injected into the card body.
+ */
 const md = (text: string) => marked.parse(text);
 
 export async function getStaticPaths() {
   const works: CollectionEntry<"works">[] = await getCollection("works");
-
   const fandomMap = new Map<string, string>();
 
+  /**
+   * Build one route per fandom slug used by published fanfiction entries.
+   *
+   * The map prevents duplicate routes when multiple works belong to the same fandom.
+   * Slugs are used as route params, while the display fandom name is passed as a prop.
+   */
   for (const work of works) {
     if (!work.data.published || work.data.category !== "fanfiction") continue;
-    if (work.data.fandoms.length === 0) continue;
 
-    for (let i = 0; i < work.data.fandoms.length; i++) {
-      const fandom = work.data.fandoms[i];
-      const fandomSlug = work.data.fandomSlug[i];
+    for (let index = 0; index < work.data.fandoms.length; index++) {
+      const fandom = work.data.fandoms[index];
+      const fandomSlug = work.data.fandomSlug[index];
 
       if (!fandomMap.has(fandomSlug)) {
         fandomMap.set(fandomSlug, fandom);
@@ -37,9 +58,14 @@ export async function getStaticPaths() {
 }
 
 const { fandom, fandomSlug } = Astro.props as Props;
-
 const works: CollectionEntry<"works">[] = await getCollection("works");
 
+/**
+ * Limit this route to published fanfiction entries that belong to the current fandom.
+ *
+ * Crossover and original works are intentionally excluded because they have their own
+ * dedicated archive routes.
+ */
 const fandomWorks = works.filter(
   (work) =>
     work.data.published &&
@@ -50,45 +76,11 @@ const fandomWorks = works.filter(
 const seriesWorks = fandomWorks.filter((work) => work.data.workType === "series");
 const oneShots = fandomWorks.filter((work) => work.data.workType === "oneshot");
 
-const seriesMap = new Map<string, CollectionEntry<"works">[]>();
-
-for (const work of seriesWorks) {
-  const seriesTitle = work.data.seriesTitle ?? "Untitled Series";
-
-  if (!seriesMap.has(seriesTitle)) {
-    seriesMap.set(seriesTitle, []);
-  }
-
-  seriesMap.get(seriesTitle)!.push(work);
-}
-
-for (const [, entries] of seriesMap) {
-  entries.sort(
-    (a, b) => (a.data.chapterNumber ?? 0) - (b.data.chapterNumber ?? 0)
-  );
-}
-
-const sortedSeries = [...seriesMap.entries()]
-  .map(([seriesTitle, entries]) => {
-    const mainCount = entries.filter((entry) => entry.data.storyGroup === "main").length;
-    const sideCount = entries.filter((entry) => entry.data.storyGroup === "side").length;
-
-    return {
-      seriesTitle,
-      seriesSlug: entries[0]?.data.seriesSlug,
-      entries,
-      totalCount: entries.length,
-      mainCount,
-      sideCount,
-      summary: entries[0]?.data.seriesSummary ?? "",
-      containsNsfw: entries.some((entry) => entry.data.nsfw),
-    };
-  })
-  .sort((a, b) => a.seriesTitle.localeCompare(b.seriesTitle));
-
-const sortedOneShots = [...oneShots].sort((a, b) =>
-  a.data.title.localeCompare(b.data.title)
-);
+/**
+ * Shared helpers keep card metadata consistent across fandom, crossover, and original pages.
+ */
+const sortedSeries = buildSeriesCards(seriesWorks);
+const sortedOneShots = [...oneShots].sort(sortByTitle);
 ---
 
 <BaseLayout title={`${fandom} Scribls`} description={`Hoard of ${fandom} Scribls`}>
@@ -101,76 +93,99 @@ const sortedOneShots = [...oneShots].sort((a, b) =>
       <h2>{fandom}</h2>
     </header>
 
-    <section class="category-section">
-      <h3>Series</h3>
+    <!-- Series cards group chapter entries by series title and link to the series index route. -->
+    <section class="category-section" aria-labelledby="series-heading">
+      <h3 id="series-heading">Series</h3>
 
       {sortedSeries.length === 0 ? (
         <p>No series yet.</p>
       ) : (
         <div class="series-grid">
           {sortedSeries.map((series) => (
-            <article class="series-card">
-              <h4>
-                {series.seriesSlug ? (
-                  <a href={`/works/${fandomSlug}/${series.seriesSlug}`}
-                  class:list={{ "nsfw-link": series.containsNsfw }}
-                  data-nsfw={series.containsNsfw ? "true" : "false"}>
-                    {series.seriesTitle}
-                  </a>
-                ) : (
-                  <span>{series.seriesTitle}</span>
-                )}
-              </h4>
+            series.seriesSlug ? (
+              <article class="series-card full-card-link">
+                <!--
+                  Stretched link makes the full card clickable while preserving readable card markup.
+                  NSFW links are intercepted by NsfwModal unless the reader has already confirmed.
+                -->
+                <a
+                  class:list={["card-stretched-link", { "nsfw-link": series.containsNsfw }]}
+                  href={`/works/${fandomSlug}/${series.seriesSlug}`}
+                  data-nsfw={series.containsNsfw ? "true" : "false"}
+                  aria-label={`Open ${series.seriesTitle}`}
+                ></a>
 
-              {series.containsNsfw && (
-                <p class="nsfw-warning">Contains NSFW content!</p>
-              )}
+                <div class="card-content">
+                  <h4>{series.seriesTitle}</h4>
 
-              <p class="series-counts">
-                {series.totalCount} chapter{series.totalCount === 1 ? "" : "s"}
-              </p>
+                  {series.containsNsfw && <p class="nsfw-warning">Contains NSFW content!</p>}
 
-              <ul class="series-meta">
-                <li>{series.mainCount} main</li>
-                <li>{series.sideCount} side</li>
-              </ul>
+                  <p class="series-counts">
+                    {series.totalCount} chapter{series.totalCount === 1 ? "" : "s"}
+                  </p>
 
-              {series.summary && (
-                <div
-                  class="series-summary"
-                  set:html={md(series.summary)}
-                />
-              )}
-            </article>
+                  <ul class="series-meta">
+                    <li>{series.mainCount} main</li>
+                    <li>{series.sideCount} side</li>
+                  </ul>
+
+                  {series.summary && <div class="series-summary" set:html={md(series.summary)} />}
+                </div>
+              </article>
+            ) : (
+              /*
+                Fallback card for malformed or incomplete series metadata.
+                The card is still displayed, but it is not linked because no safe URL can be built.
+              */
+              <article class="series-card">
+                <h4>{series.seriesTitle}</h4>
+
+                {series.containsNsfw && <p class="nsfw-warning">Contains NSFW content!</p>}
+
+                <p class="series-counts">
+                  {series.totalCount} chapter{series.totalCount === 1 ? "" : "s"}
+                </p>
+
+                <ul class="series-meta">
+                  <li>{series.mainCount} main</li>
+                  <li>{series.sideCount} side</li>
+                </ul>
+
+                {series.summary && <div class="series-summary" set:html={md(series.summary)} />}
+              </article>
+            )
           ))}
         </div>
       )}
     </section>
 
-    <section class="category-section">
-      <h3>One-Shots</h3>
+    <!-- One-shots link directly to their reading pages because they do not have a series index. -->
+    <section class="category-section" aria-labelledby="oneshots-heading">
+      <h3 id="oneshots-heading">One-Shots</h3>
 
       {sortedOneShots.length === 0 ? (
         <p>No one-shots yet.</p>
       ) : (
         <div class="oneshot-list">
           {sortedOneShots.map((work) => (
-            <article class="oneshot-card">
-              <h4>
-                <a href={`/works/read/${work.id}`}
-                class:list={{ "nsfw-link": work.data.nsfw}}
-                data-nsfw={work.data.nsfw ? "true" : "false"}>
-                  {work.data.title}
-                  </a>
-              </h4>
+            <article class="oneshot-card full-card-link">
+              <a
+                class:list={["card-stretched-link", { "nsfw-link": work.data.nsfw }]}
+                href={`/works/read/${work.id}`}
+                data-nsfw={work.data.nsfw ? "true" : "false"}
+                aria-label={`Open ${work.data.title}`}
+              ></a>
 
-              {work.data.nsfw && (
-                <p class="nsfw-warning">Contains NSFW content!</p>
-              )}
+              <div class="card-content">
+                <h4>{work.data.title}</h4>
 
-              <p class="oneshot-summary">{work.data.summary}</p>
+                {work.data.nsfw && <p class="nsfw-warning">Contains NSFW content!</p>}
 
-              <p class="oneshot-meta">Word Count: {work.data.wordCount}</p>
+                <p class="oneshot-summary">{work.data.summary}</p>
+                <p class="oneshot-meta">Word Count: {work.data.wordCount}</p>
+
+                <TagList tags={work.data.tags ?? []} grouped={false} />
+              </div>
             </article>
           ))}
         </div>
@@ -178,217 +193,6 @@ const sortedOneShots = [...oneShots].sort((a, b) =>
     </section>
   </section>
 
-  <div id="nsfw-modal" class="nsfw-modal hidden" aria-hidden="true">
-  <div class="nsfw-modal-content">
-    <h3>NSFW Content Warning</h3>
-    <p>
-      This work contains NSFW content. Please continue only if you are 18+ or of legal age in your region.
-    </p>
-
-    <div class="nsfw-modal-actions">
-      <button id="nsfw-cancel" type="button">Cancel</button>
-      <button id="nsfw-confirm" type="button">I am 18+</button>
-    </div>
-  </div>
-</div>
+  <!-- Shared confirmation modal used by any link with data-nsfw="true". -->
+  <NsfwModal />
 </BaseLayout>
-
-<script>
-  let pendingHref: string | null = null;
-
-  const modal = document.getElementById("nsfw-modal");
-  const confirmButton = document.getElementById("nsfw-confirm");
-  const cancelButton = document.getElementById("nsfw-cancel");
-
-  const nsfwLinks = document.querySelectorAll<HTMLAnchorElement>("a[data-nsfw='true']");
-
-  for (const link of nsfwLinks) {
-    link.addEventListener("click", (event) => {
-      const alreadyConfirmed = sessionStorage.getItem("nsfw-confirmed") === "true";
-
-      if (alreadyConfirmed) {
-        return;
-      }
-
-      event.preventDefault();
-      pendingHref = link.href;
-
-      modal?.classList.remove("hidden");
-      modal?.setAttribute("aria-hidden", "false");
-    });
-  }
-
-  cancelButton?.addEventListener("click", () => {
-    pendingHref = null;
-    modal?.classList.add("hidden");
-    modal?.setAttribute("aria-hidden", "true");
-  });
-
-  confirmButton?.addEventListener("click", () => {
-    sessionStorage.setItem("nsfw-confirmed", "true");
-
-    if (pendingHref) {
-      window.location.href = pendingHref;
-    }
-  });
-</script>
-
-<style>
-  .breadcrumb {
-    margin: 0 0 1rem 0;
-    font-size: 0.95rem;
-    opacity: 0.8;
-  }
-
-  .breadcrumb a {
-    text-decoration: none;
-  }
-
-  .category-page {
-    display: flex;
-    flex-direction: column;
-    gap: 2rem;
-  }
-
-  .category-header h2 {
-    margin-bottom: 0.5rem;
-  }
-
-  .category-intro {
-    margin: 0;
-    max-width: 60ch;
-    opacity: 0.9;
-  }
-
-  .category-section {
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-  }
-
-  .category-section h3 {
-    margin-bottom: 0;
-  }
-
-  .series-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-    gap: 1rem;
-  }
-
-  .series-card,
-  .oneshot-card {
-    border: 1px solid #2a2a2a;
-    background: #151515;
-    border-radius: 0.75rem;
-    padding: 1rem;
-  }
-
-  .series-card h4,
-  .oneshot-card h4 {
-    margin: 0 0 0.5rem 0;
-    font-size: 1.1rem;
-  }
-
-  .series-card h4 a,
-  .oneshot-card h4 a {
-    text-decoration: none;
-  }
-
-  .series-counts,
-  .oneshot-meta {
-    margin: 0 0 0.75rem 0;
-    color: #cfc7bb;
-  }
-
-  .series-meta {
-    margin: 0 0 0.75rem 0;
-    padding-left: 1.2rem;
-  }
-
-  .series-meta li {
-    margin: 0.25rem 0;
-  }
-
-  .series-summary p {
-    margin: 0 0 0.75rem 0;
-  }
-
-  .series-summary p:last-child {
-    margin-bottom: 0;
-  }
-
-  .oneshot-summary p {
-    margin: 0 0 0.75rem 0;
-  }
-
-  .oneshot-summary p:last-child {
-    margin-bottom: 0;
-  }
-
-  .oneshot-list {
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-  }
-
-  .nsfw-warning {
-    margin: 0.35rem 0 0 0;
-    font-size: 0.9rem;
-    font-style: italic;
-    color: #d9a3a3;
-  }
-
-  .nsfw-modal.hidden {
-    display: none;
-  }
-
-  .nsfw-modal {
-    position: fixed;
-    inset: 0;
-    background: rgba(0, 0, 0, 0.75);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 1rem;
-    z-index: 1000;
-  }
-
-  .nsfw-modal-content {
-    max-width: 460px;
-    width: 100%;
-    background: #151515;
-    border: 1px solid #2a2a2a;
-    border-radius: 0.75rem;
-    padding: 1.25rem;
-  }
-
-  .nsfw-modal-content h3 {
-    margin-top: 0;
-  }
-
-  .nsfw-modal-actions {
-    display: flex;
-    justify-content: flex-end;
-    gap: 0.75rem;
-    margin-top: 1rem;
-  }
-
-  .nsfw-modal-actions button {
-    padding: 0.6rem 0.9rem;
-    border-radius: 0.5rem;
-    border: 1px solid #3a3a3a;
-    background: #1d1d1d;
-    color: #e8e6e3;
-    cursor: pointer;
-  }
-
-  .authors-note img {
-    display: inline-block;
-    vertical-align: middle;
-    margin-left: 0.5rem;
-    height: 31px;
-    position: relative;
-    top: -1px; 
-  }
-</style>
