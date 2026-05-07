@@ -19,7 +19,7 @@ summary: |
     become a hunter, and finds herself on a different path.
 chapterNumber: 1
 chapterTitle: "First Contact"
-wordCount: 
+wordCount: 0
 status: "draft"
 published: false
 nsfw: true

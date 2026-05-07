@@ -5,6 +5,8 @@ workType: "series"
 storyGroup: "main"
 seriesTitle: "All That Carries Over"
 seriesSlug: "all-that-carries-over"
+fandoms: [""]
+fandomSlug: [""]
 seriesSummary: |
     The game ended. The world did not.
 

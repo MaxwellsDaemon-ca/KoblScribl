@@ -17,7 +17,7 @@ summary: |
  Various ideas and stuff for MH story
 chapterNumber: 1
 chapterTitle: "Ideas for A Different Way"
-wordCount: 
+wordCount: 0
 status: "draft"
 published: false
 nsfw: true

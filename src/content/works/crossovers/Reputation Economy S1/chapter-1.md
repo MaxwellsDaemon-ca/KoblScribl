@@ -1,3 +1,27 @@
+---
+title: "TBD"
+category: "fanfiction"
+fandoms: ["Pokémon"]
+fandomSlug: ["pokemon"]
+workType: "series"
+storyGroup: "main"
+seriesTitle: "Redolence"
+seriesSlug: "redolence"
+seriesSummary: |
+    Alexei, a salandit of habit, begins to notice the subtle ways his life is changing as new presences and old routines collide around his weekly game.
+
+    This story takes place in Halcyon Falls, a setting created by Irisfofs and featured in the *Covalence* series. Much of what makes this world work belongs to them. Link to their website below.
+    <a href="https://k.ink.horse/fics/">  
+    <img src="/images/iris-tail.png" alt="Irisfofs Site Banner" /></a>
+chapterNumber: 2
+chapterTitle: "TBD"
+summary: "A salandit thinks he's solved the problem, but has he really?"
+wordCount: 0
+status: "draft"
+published: false
+authorsNote: "This work has been proofread/beta'd by Irisfofs and DuskGuard! And features DuskGuard's character Hazel! Thanks you two!"
+---
+
 The lights came up all at once – not gradually, not gently, but as if someone had decided illumination was now mandatory. At the center of it stood a man in a sharply tailored pinstripe suit, hands already clasped behind his back like he had been waiting there the entire time. 
 
 "Ladies, gentlemen, entities, and those currently defying classification," he began, voice bright, practiced and carrying just a touch too easily through the space. "Welcome."
